@@ -1,0 +1,119 @@
+
+
+header {
+    background-color: #2a3a4a;
+    min-height: 12vh;
+    display: block;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+
+
+header nav ul li {
+    display: block;
+    padding: 0.5em;
+    margin-top: 0.3em;
+    margin-bottom: 0.5em;
+    background-color: #5f9ea0;
+}
+
+header nav ul li a {
+    font-weight: normal;
+    text-decoration: none;
+    color: white;
+}
+
+.customerDetails {
+    background-color: #FFE4C4;
+    min-height: 30vh;
+}
+
+.repairDetails{
+    background-color: #F0FFFF;
+    min-height: 30vh;
+}
+
+.courtesyPhone{
+    background-color: #5F9EA0;
+    min-height: 30vh;
+}
+
+.cost{
+    background-color: #E9967A;
+    min-height: 20vh;
+}
+.buttonSection{
+    background-color: #E9967A;
+    min-height: 5vh;
+}
+
+
+.customerDetails{
+    grid-area: box1;
+}
+.repairDetails{
+    grid-area: box2;
+}
+.courtesyPhone{
+    grid-area: box3;
+}
+.cost{
+    grid-area: box4;
+}
+.buttonSection{
+    grid-area: box5;
+}
+
+/*style for tablet*/
+@media screen and (min-width: 600px){
+    header nav ul{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 0.3em;
+        
+    }
+}
+
+
+/*style for desktop*/
+
+@media screen and (min-width: 800px){
+    header{
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+
+    }
+
+    
+.formLayout{
+    display: grid;
+    grid-template-areas: 'box1 box2 box3'
+                         'box1 box2 box4'
+                         'box5 box5 box5';
+}
+}
+
+
+.fieldSetA {
+    border: 1px solid grey;
+}
+
+/*ledgend in customer details section*/ 
+.fieldSetlegend{
+    margin-left: 1em;
+    width: 32%;
+    font-size: 1em;
+}
+
+
+footer{
+    align-items: center;
+    background-color: #2a3a4a;
+    min-height: 3em;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+
+}

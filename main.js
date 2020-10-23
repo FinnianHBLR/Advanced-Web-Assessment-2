@@ -51,9 +51,22 @@ function validate() {
 
         console.log(customer);
 
+        //Database
+      
+        let openRequest = indexedDB.open("db", 2);
+
+        // create/upgrade the database without version checks
+        openRequest.onupgradeneeded = function() {
+          let db = openRequest.result;
+          if (!db.objectStoreNames.contains('books')) { // if there's no "books" store
+            db.createObjectStore('outputs', {autoIncrement: true}); // create it
+          }
+        };
+
+        
 
         var opened = window.open("");
-        opened.document.write("<html><head><title>MyTitle</title></head><body>test</body></html>");
+        opened.document.write("<html><head><title>MyTitle</title></head><body>Test</body></html>");
         //Then store this to DB
         //Submit all data to a form.
 

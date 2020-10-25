@@ -45,134 +45,232 @@ function validate() {
 
         var description = document.getElementById('description').value;
 
-        var customer = new Customer(consumer, business, firstName, lastName, phoneNumber, email, purcahseDate, repairDate, underWarrenty, IMEI, street, suburb, city, postCode, selectedTitle, selectedMake, selectedCoutesyPhone, selectedFault, description, modelNumber);
+        //console.log(customer);
 
-        newArray.push(customer);
-
-        console.log(customer);
-
-        //Database
-      
-        let openRequest = indexedDB.open("db", 2);
-
-        // create/upgrade the database without version checks
-        openRequest.onupgradeneeded = function() {
-          let db = openRequest.result;
-          if (!db.objectStoreNames.contains('books')) { // if there's no "books" store
-            db.createObjectStore('outputs', {autoIncrement: true}); // create it
-          }
-        };
-
-        
+        addInvoice(consumer, business, firstName, lastName, phoneNumber, email, purcahseDate, repairDate, underWarrenty, IMEI, street, suburb, city, postCode, selectedTitle, selectedMake, selectedCoutesyPhone, selectedFault, description, modelNumber);
 
         var opened = window.open("");
-        opened.document.write("<html><head><title>MyTitle</title></head><body>Test</body></html>");
-        //Then store this to DB
-        //Submit all data to a form.
-
-        
+        opened.document.write("<!DOCTYPE html><html><head><script src=\"main.js\"></script></head><body><section><hr><h1>Exercise 3: Use IndexedDB API to create database for \"Phone Fix Booking System\"</h1><div id=\"allInvoices\" class=\"all-invoices\"></div><table id=\"invoice_table\"></table></section><script type=\"text/javascript\">displayInvoices();</script></body></html>");
+        //displayInvoices();
 
     }
 
 }
 
-var Customer = function (consumer, business, firstName, lastName, phoneNumber, email, purcahseDate, repairDate, IMEI, street, suburb, city, postCode, selectedTitle, selectedMake, selectedCoutesyPhone, selectedFault, description, modelNumber) {
-    this.consumber = consumer;
-    this.business = business;
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.phoneNumber = phoneNumber;
-    this.email = email;
-    this.purcahseDate = purcahseDate;
-    this.repairDate = repairDate;
-    this.IMEInumber = IMEI;
-    this.street = street;
-    this.suburb = suburb;
-    this.city = city;
-    this.postCode = postCode;
-    this.selectedTitle = selectedTitle;
-    this.selectedMake = selectedMake;
-    this.selectedCoutesyPhone = selectedCoutesyPhone;
-    this.selectedFault = selectedFault;
-    this.description = description;
-    this.modelNumber = modelNumber;
+console.log('logging');
+
+//DATABASE----------------------------------------------------------
+//Based of lab work.
+//Brower checks if indeDB will work.
+window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+
+window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction;
+window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
+//Browser support IndexedDB API or not?
+if (!window.indexedDB) {
+    window.alert("Your browser doesn't support a stable version of IndexedDB.")
 }
 
 
-Customer.prototype.getConsumer = function () {
-    return this.consumber;
+
+//db is defined as the dabase
+var db;
+//Open database
+var request = window.indexedDB.open("PhoneRepairSystem", 1);
+
+//If an onerror is called this will log it to console.
+request.onerror = function (event) {
+    console.log("Database Error.");
+};
+
+
+//If succsessful the database (db) and sends a request (request). As defined above.
+
+request.onsuccess = function (event) {
+    db = request.result;
+    console.log("success: " + db);
+};
+
+
+
+request.onupgradeneeded = function (event) {
+    //When openupgrade is called the database will be created as one does not alredy exist.
+
+    var db = event.target.result;
+    //Create a new table called "invoice" and assign it to a "objectStore" variable
+    // the primary key of the databse if autoincremented. 
+    var objectStore;
+    if (!db.objectStoreNames.contains('invoice')) {
+
+        objectStore = db.createObjectStore('invoice', { autoIncrement: true });
+    }
+
 }
 
-Customer.prototype.getBusiness = function () {
-    return this.business;
-}
-Customer.prototype.getFirstName = function () {
-    return this.firstName;
+
+
+//Adding to database
+function addInvoice(consumerData, businessData, firstNameData, lastNameData, phoneNumberData, emailData, purchaseDateData, repairDateData, warrentyData, IMEIData, streetData, suburbData, cityData, postCodeData, titleData, makeData, courtesyPhoneData, faultData, descriptionData, modelData) {
+    //Get data entered
+    //consumer, business, firstName, lastName, phoneNumber, email, purcahseDate, repairDate, underWarrenty, IMEI, street, suburb, city, postCode, selectedTitle, selectedMake, selectedCoutesyPhone, selectedFault, description, modelNumber);
+    var consumer = consumerData;
+    var business = businessData;
+    var firstName = firstNameData;
+    var lastName = lastNameData;
+    var phoneNumber = phoneNumberData;
+    var email = emailData;
+    var purcahseDate = purchaseDateData;
+    var repairDate = repairDateData;
+    var underWarrenty = warrentyData;
+    var IMEI = IMEIData;
+    var street = streetData;
+    var suburb = suburbData;
+    var city = cityData;
+    var postCode = postCodeData;
+    var selectedTitle = titleData;
+    var selectedMake = makeData;
+    var selectedCoutesyPhone = courtesyPhoneData;
+    var selectedFault = faultData;
+    var description = descriptionData;
+    var modelNumber = modelData;
+
+
+    let total_cost = 'test';
+    let GST = 'test';
+
+    let invoiceID = 0;
+
+    //ASYNCHRONOOUS TRANSACTION: ISSUE
+    //Traverse all the records of the data table by using the pointer object IDBCursor
+    //Read more here: https://developer.mozilla.org/en-US/docs/Web/API/IDBCursor
+
+    var tx = db.transaction("invoice", "readwrite");
+    //Allows the database to be read/written
+
+    tx.objectStore("invoice").openCursor().onsuccess = function (event) {
+        var cursor = event.target.result;
+        //For each cursor (each invoice object)
+        if (cursor) {
+            //Get id
+            let id = cursor.key;
+            if (id >= invoiceID) {
+                invoiceID = id;
+            }
+            //Move to next object
+            cursor.continue();
+        } else {
+            //alert("No more entries!");
+        }
+    };
+
+    //WAIT UNTIL THE TRANSACTION COMPLETE ==> ADD NEW INVOICE
+    tx.oncomplete = function () {
+        //Read back updated data once complete.
+
+        db.transaction("invoice").objectStore("invoice").get(0).onsuccess = function (event) {
+            //Increase the invoiceID by 1, this is so it can be added to the object. This is also done by autoIncrement above.
+            invoiceID++;
+            alert("invoiceID =" + invoiceID);
+
+            //Open a transaction to access to table "invoice" in the mode of "readwrite" & add a new invoice
+            var request = db.transaction(["invoice"], "readwrite")
+                .objectStore("invoice")
+                .add({
+                    id: invoiceID, consumer: consumer, business: business, firstName: firstName, lastName: lastName, phoneNumber: phoneNumber,
+                    email: email, purcahseDate: purcahseDate, repairDate: repairDate,
+                    underWarrenty: underWarrenty, IMEI: IMEI, street: street, suburb: suburb, city: city,
+                    postCode: postCode, selectedTitle: selectedTitle, selectedMake: selectedMake, selectedCoutesyPhone: selectedCoutesyPhone,
+                    selectedFault: selectedFault, description: description, modelNumber: modelNumber, total_cost: total_cost, GST: GST
+                });
+
+            //If the addition was successful, alert an successful message
+            request.onsuccess = function (event) {
+                alert("SUCCESSFUL! New invoice = " + invoiceID + " has been added to your database.");
+            };
+            //If the addition failed, alert an error message
+            request.onerror = function (event) {
+                alert("ERROR! Unable to add a new invoice to your database! invoiceID =" + invoiceID);
+            }
+        }
+    }
 }
 
-Customer.prototype.getLastName = function () {
-    return this.lastName;
+
+function displayInvoices() {
+    //Wais for databse to be open before displaying.
+    request.onsuccess = function (event) {
+        db = request.result;
+        //console.log("success: " + db);
+
+        //Get the entire object store "invoice" which contains all invoice info
+        var objectStore = db.transaction("invoice").objectStore("invoice");
+        //Get "table" element
+        var invoice_table = document.getElementById("invoice_table");
+        var row, cell;
+        var id, consumer, business, firstName, lastName, phoneNumber, email, purcahseDate, repairDate, underWarrenty, IMEI, street, suburb,
+            city, postCode, selectedTitle,
+            selectedMake, selectedCoutesyPhone, selectedFault, description, modelNumber, total_cost, GST;
+        var allInfo = "";
+
+        //If the "get" transaction was successful, traverse all the records of the data table
+        // by using the pointer object IDBCursor
+        objectStore.openCursor().onsuccess = function (event) {
+            var cursor = event.target.result;
+            //For each cursor (each invoice object), get invoice info and add it to the "invoice_table"
+            if (cursor) {
+                //Add a new row inside the invoice_table to display invoice info
+                id = cursor.key;
+                consumer = cursor.value.consumer;
+                business = cursor.value.business;
+                firstName = cursor.value.firstName;
+                lastName = cursor.value.lastName;
+                phoneNumber = cursor.value.phoneNumber;
+                email = cursor.value.email;
+                purcahseDate = cursor.value.purcahseDate;
+                repairDate = cursor.value.repairDate;
+                underWarrenty = cursor.value.underWarrenty;
+                IMEI = cursor.value.IMEI;
+                street = cursor.value.street;
+                suburb = cursor.value.suburb;
+                city = cursor.value.city;
+                postCode = cursor.value.postCode;
+                selectedTitle = cursor.value.selectedTitle;
+                selectedMake = cursor.value.selectedMake;
+                selectedCoutesyPhone = cursor.value.selectedCoutesyPhone;
+                selectedFault = cursor.value.selectedFault;
+                description = cursor.value.description;
+                modelNumber = cursor.value.modelNumber;
+
+                total_cost = cursor.value.total_cost;
+                GST = cursor.value.GST;
+                //
+                allInfo += "ID: " + id + ". consumer: " + consumer + ". Firstname: " + firstName + ". Lastname: " + lastName + ". PhoneNumber " + phoneNumber
+                    + ". email: " + email + ". purchaseDate: " + purcahseDate + ". RepairDate: " + repairDate + ". underWarrenty " + underWarrenty
+                    + ". IMEI " + IMEI + ". Street: " + street + ". Suburb: " + suburb + ". City " + city + ". PostCode: " + postCode + ". Title "
+                    + selectedTitle + ". SlectedMake: " + selectedMake + ". SelectedCoutesyPhone: " + selectedCoutesyPhone + ". SelectedFault: "
+                    + selectedFault + ". description: " + description + ". modelNumber: " + modelNumber
+                    + ". total_cost: " + total_cost + ". GST: " + GST + "<br>";
+
+                //Move to next object
+                cursor.continue();
+
+            } else {
+                //alert("No more entries!");
+            }
+            //
+            document.getElementById("allInvoices").innerHTML = allInfo;
+        };
+
+    };
+
 }
 
-Customer.prototype.getPhoneNumber = function () {
-    return this.phoneNumber;
-}
+//Database-----------------------------------------------------------
 
-Customer.prototype.getEmail = function () {
-    return this.email;
-}
 
-Customer.prototype.getPurcahseDate = function () {
-    return this.purcahseDate;
-}
 
-Customer.prototype.getRepairDate = function () {
-    return this.repairDate;
-}
 
-Customer.prototype.getIMEI = function () {
-    return this.IMEInumber;
-}
 
-Customer.prototype.getStreet = function () {
-    return this.street;
-}
-
-Customer.prototype.getSuburb = function () {
-    return this.suburb;
-}
-
-Customer.prototype.getCity = function () {
-    return this.city;
-}
-
-Customer.prototype.getPostCode = function () {
-    return this.postCode;
-}
-
-Customer.prototype.getCustomerTitle = function () {
-    return this.selectedTitle;
-}
-
-Customer.prototype.getPhoneMake = function () {
-    return this.selectedMake;
-}
-
-Customer.prototype.getCourtesyPhone = function () {
-    return this.selectedCoutesyPhone;
-}
-
-Customer.prototype.getFault = function () {
-    return this.selectedFault;
-}
-
-Customer.prototype.getDescription = function () {
-    return this.description;
-}
-
-Customer.prototype.getModelNumber = function(){
-    return this.modelNumber;
-}
 
 
 function validationFirstAndLastName() {
@@ -181,7 +279,7 @@ function validationFirstAndLastName() {
     var fn = document.getElementById("firstName").value;
     var ln = document.getElementById("lastName").value;
 
-    
+
     if (fn.match(fnlnNameReject) && ln.match(fnlnNameReject)) {
         //CORRECT!
         //If first and last name valid this will return true
@@ -264,8 +362,8 @@ function validateDates() {
         var purcahseDate = new Date(document.getElementById("purcahseDate").value); //Must NOT be in future
         var repairDate = new Date(document.getElementById("repairDate").value); //Must NOT be in the future, must be later than purcahse
         //As time creates problems with comparing dates (As time is taken into account), time has been reset!
-        purcahseDate.setHours(0,0,0,0);
-        repairDate.setHours(0,0,0,0);
+        purcahseDate.setHours(0, 0, 0, 0);
+        repairDate.setHours(0, 0, 0, 0);
     } catch (e) {
         console.log("Something went wrong!")
         alertUser("DATE ERROR!")
@@ -274,7 +372,7 @@ function validateDates() {
 
     var today = new Date();
     //Reset time!
-    today.setHours(0,0,0,0);
+    today.setHours(0, 0, 0, 0);
 
     //new Date() automatically gets the current date. Read here https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date
 
@@ -358,11 +456,11 @@ var serviceFee = 0;
 
 
 function addTocourtesyTable() {
-//The pricipal of this function is when the add button is clicked, the table (and variables) will be updated with new information.
+    //The pricipal of this function is when the add button is clicked, the table (and variables) will be updated with new information.
 
     if (ableToAdd == true && document.getElementById('courtesyPhone').value == "iPhone 7") {
         //In this code below, if the value of the selector == 'courtesyPhone' the table called 'table' will be found and new rows and cells added.
-        
+
         var table = document.getElementById('table');
         var row = table.insertRow(1);
         var cellItem = row.insertCell(0);
@@ -404,85 +502,85 @@ function addTocourtesyTable() {
     }
 
     //Update Bond and costs.
-    if(document.getElementById('consumer').checked == true) {
+    if (document.getElementById('consumer').checked == true) {
         //If you are a consumer you pay a bond
         document.getElementById('bond').value = totalCost;
     } else {
         //If you are a busness you DO NOT pay a bond
         //As this gets handeled elsewhere, this does not do anything. It is simply for logic purposes. 
     }
-        
+
 }
 
-function upDateCosts(){
+function upDateCosts() {
 
     //ServiceFee
     //DEBUG: console.log('working');
-    if(document.getElementById('warrenty').checked == true) {
-    //This is where the 'warrenty' of the product is checked. If it is still under warrenty (checked) the service fee will be set to 0.
-    document.getElementById('serviceFee').value = 0;
-    serviceFee = 0;
+    if (document.getElementById('warrenty').checked == true) {
+        //This is where the 'warrenty' of the product is checked. If it is still under warrenty (checked) the service fee will be set to 0.
+        document.getElementById('serviceFee').value = 0;
+        serviceFee = 0;
     } else if (document.getElementById('warrenty').hidden == false) {
-    //If the 'warrenty' is checked the service fee will be set to 85.
-    serviceFee = 85;
-    document.getElementById('serviceFee').value = 85;
+        //If the 'warrenty' is checked the service fee will be set to 85.
+        serviceFee = 85;
+        document.getElementById('serviceFee').value = 85;
     }
     //As this above is the only place where the serviceFee gets set, it does not need to be set to 0 with an else statement.
 
     //bond
-    if(document.getElementById('consumer').checked == true) {
+    if (document.getElementById('consumer').checked == true) {
         //If you are a consumer the cost is calculated as totalcost (Or bond) + service fee (which can be 0 or 85 depending on the warrenty).
         document.getElementById('bond').value = totalCost;
         document.getElementById('total').value = totalCost + serviceFee;
         document.getElementById('gst').value = (totalCost + serviceFee) * 0.15;
         document.getElementById('totalGST').value = (totalCost + serviceFee) * 1.15;
         //DEBUG: console.log("trying to add bond + service" + totalCost + serviceFee);
-    } else if(document.getElementById('business').checked == true){
+    } else if (document.getElementById('business').checked == true) {
         //If you are a business you do not pay a bond. Although, in this case the website will need to remeber the bond price
         //incase the user clicks the consumer button. 
         document.getElementById('total').value = serviceFee;
         document.getElementById('bond').value = 0;
 
-        
+
         document.getElementById('gst').value = serviceFee * 0.15;
         document.getElementById('totalGST').value = serviceFee * 1.15;
         //DEBUG: console.log("trying to add service fee only");
     }
-    
+
 }
 
 function removeFromTable() {
     //From https://www.w3schools.com/jsref/met_table_deleterow.asp
     //Below the code retrieves the cost to take down by the first (1) row (row and cell index starts at 0) and the first cell. This is where the price is located.
     costToTakeDown = document.getElementById("itemCostTable").rows[1].cells[1].innerHTML;
-    
-    if(costToTakeDown == "275"){
+
+    if (costToTakeDown == "275") {
         ableToAdd = true;
         //If the price that is detected in row 1 and cell 1 is equal to 275, the item IS a phone. The var ableToAdd then enables the website to add a new phone
-    } else if(costToTakeDown == "100") {
+    } else if (costToTakeDown == "100") {
         ableToAdd = true;
         //If the price that is detected in row 1 and cell 1 is equal to 100, the item IS also a phone.
-    } else if(costToTakeDown == "30") {
+    } else if (costToTakeDown == "30") {
         ableToAddCharger = true;
         //ALthough, if the price detected is 30, this is a chrager.
     }
 
     totalCost = totalCost - costToTakeDown;
     //Totalcost (or bond) is now set to the totalcost - the detected costToTakeDown. Eg, 100 is detected, this will be taken down by 100.
-    if(document.getElementById('consumer').checked == true) {
+    if (document.getElementById('consumer').checked == true) {
         //If you are a business you do not pay a bond. Although this is already handeled in upDateCosts(), this is just to make sure it works.
         document.getElementById('bond').value = totalCost;
     }
-    
+
     //Finally delete the row after all the prices are found.
     document.getElementById('table').deleteRow(1);
-    
+
     //Now reload the costs as these have now changed.
     upDateCosts();
 
 }
 
-function reset(){
+function reset() {
     //Goes through the entire document and resets everything.
     document.getElementById('consumer').checked = false;
     document.getElementById('business').checked = false;
@@ -514,7 +612,7 @@ function reset(){
     var table = document.getElementById("table");
 
     while (table.rows.length > 1) {
-    table.deleteRow(1);
+        table.deleteRow(1);
 
     }
 

@@ -23,7 +23,14 @@ function validate() {
         var email = document.getElementById('email').value;
         var purcahseDate = document.getElementById('purcahseDate').value;
         var repairDate = document.getElementById('repairDate').value;
-        var underWarrenty = validateWarrenty();//This only needs to check if it is under warrenty.
+        //var underWarrenty = validateWarrenty();//This only needs to check if it is under warrenty.
+        if ($('#warrenty').is(':checked') && validateWarrenty() == "Under Warrenty") {
+            //This means that if the user accidentally left the warrenty box checked, then the purchase date is invalid it will avoid a warrenty being applied.
+            underWarrenty = true;
+        } else {
+            underWarrenty = false;
+        }
+
         var IMEI = document.getElementById('imeiNumber').value;
         var street = document.getElementById('street').value;
         var suburb = document.getElementById('suburb').value;
@@ -40,7 +47,17 @@ function validate() {
         //var courtesyPhone = document.getElementById('courtesyPhone');
         //var selectedCoutesyPhone = courtesyPhone.options[courtesyPhone.selectedIndex].text;
 
-        var selectedCoutesyPhone = document.getElementById("itemCostTable").rows[1].cells[0].innerHTML + " " + document.getElementById("itemCostTable").rows[2].cells[0].innerHTML;
+        //Below is code in case the user has not entered any cortesy equipment, or only half.
+        try {
+            var selectedCoutesyPhone = document.getElementById("itemCostTable").rows[1].cells[0].innerHTML + " " + document.getElementById("itemCostTable").rows[2].cells[0].innerHTML;
+        } catch (e) {
+            try {
+                var selectedCoutesyPhone = document.getElementById("itemCostTable").rows[1].cells[0].innerHTML;
+            } catch (e) {
+                var selectedCoutesyPhone = "No courtesy equipment";
+            }
+        }
+
 
         var fault = document.getElementById('fault');
         var selectedFault = fault.options[fault.selectedIndex].text;
@@ -59,11 +76,11 @@ function validate() {
         var totalGst = document.getElementById('totalGST').value;
         var gst = document.getElementById('gst').value;
         //console.log(customer);
-
+        //Calls the add invoice to add all the data defined above to the database.
         addInvoice(consumer, business, firstName, lastName, phoneNumber, email, purcahseDate, repairDate, underWarrenty, IMEI, street, suburb, city, postCode, selectedTitle, selectedMake, selectedCoutesyPhone, selectedFault, description, modelNumber, bond, serviceFee, total, totalGst, gst);
 
         var opened = window.open("");
-        opened.document.write("<!DOCTYPE html><html><head><script src=\"main.js\"></script><link rel=\"stylesheet\" href=\"style.css\"><script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js\"></script><link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css\"integrity=\"sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z\" crossorigin=\"anonymous\"><script src=\"https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js\"integrity=\"sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV\"crossorigin=\"anonymous\"></script><script src=\"https://code.jquery.com/jquery-3.5.1.slim.min.js\"integrity=\"sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj\"crossorigin=\"anonymous\"></script><script src=\"https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js\"integrity=\"sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN\"crossorigin=\"anonymous\"></script></head><body><section><div class=\"repair\"><h1>Repair Booking</h1><h3 class=\"text-right px-3\">Amount Due</h3><h4 class=\"text-right px-3\" id=\"outputAmountDue\"></h4></div></section><script type=\"text/javascript\">displayInvoices();</script><div class=\"text-center\"><a class=\"previous round selbutton\" onclick=\"previous()\">&#8249;</a><a class=\"next round selbutton\" onclick=\"next()\">&#8250;</a></div><div class=\"px-2\"><div class=\"container\"><div class=\"row\"><div class=\"col-sm\"><h4>Customer</h4><p id=\"outPutfullName\">Full Name:</p><p id=\"outputStreet\">Street:</p><p id=\"outputSuburb\">Suburb:</p><p id=\"outputCity\">City:</p><p id=\"outputPostCode\">PostCode:</p><p id=\"outputPhoneNumber\">Phone Number</p><p id=\"outputEmail\">Email:</p></div><div class=\"col-sm\"></div><div class=\"col-sm\"><h4>Repair Job</h4><p class=\"ml-5\" id=\"outputJobNumber\">Job number:</p><p class=\"ml-5\" id=\"outputInvoice\">Invoice Date:</p></div></div></div><hr><div class=\"container\"><div class=\"row\"><div class=\"col-sm\"><div><h2>Repair Details</h2></div><div><p id=\"outPutpurchaseDate\">Purcahse Date:</p><p id=\"outputRepairDate\">Repair Date:</p><p id=\"outputWarrenty\">Under Warrenty:</p><p id=\"outputIMEINumber\">IMEI Number:</p><p id=\"outputDeviceMake\">Device Make:</p><p id=\"outputFault\">Fault category:</p><p id=\"outputDescription\">Description:</p><h4>Cortesy Phone:</h4><p id=\"outputItems\">Item(s):</p><p id=\"outputCost\">Cost:</p></div><div class=\"col-sm\"></div></div></div></div><div class=\"container\"><div class=\"row\"><div class=\"col-sm\"><div><div class=\"col-sm\"></div><div class=\"text-right px-4 py-2\"><div class=\"col-sm\"><h2>Totals</h2><p id=\"outputBond\">Bond:</p><p id=\"outputServiceFee\">Service Fee:</p><p id=\"outputTotal\">Total:</p><p id=\"outputGST\">GST:</p><p id=\"outputTotalGST\">Total(+GST):</p></div></div></div></div></div></div></div><hr><div class=\"px-5\"><h4>WeFixPhones&co</h4><p>+64 021234567</p><p>wefixphones@example.co.nz</p><p>4322 Ritter Street, Anniston, Basin, New Zealand, 4543</p></div></body></html>");
+        opened.document.write("<!DOCTYPE html><html><head><script src=\"main.js\"></script><link rel=\"stylesheet\" href=\"style.css\"><script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js\"></script><link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css\"integrity=\"sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z\" crossorigin=\"anonymous\"><script src=\"https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js\"integrity=\"sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV\"crossorigin=\"anonymous\"></script><script src=\"https://code.jquery.com/jquery-3.5.1.slim.min.js\"integrity=\"sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj\"crossorigin=\"anonymous\"></script><script src=\"https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js\"integrity=\"sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN\"crossorigin=\"anonymous\"></script></head><body><section><div class=\"repair\"><h1>Repair Booking</h1><h3 class=\"text-right px-3\">Amount Due</h3><h4 class=\"text-right px-3\" id=\"outputAmountDue\"></h4></div></section><div class=\"text-center\"><a class=\"previous round selbutton\" onclick=\"previous()\">&#8249;</a><a class=\"next round selbutton\" onclick=\"next()\">&#8250;</a></div><div class=\"px-2\"><div class=\"container\"><div class=\"row\"><div class=\"col-sm\"><h4>Customer</h4><p id=\"outPutfullName\">Full Name:</p><p id=\"outputStreet\">Street:</p><p id=\"outputSuburb\">Suburb:</p><p id=\"outputCity\">City:</p><p id=\"outputPostCode\">PostCode:</p><p id=\"outputPhoneNumber\">Phone Number</p><p id=\"outputEmail\">Email:</p></div><div class=\"col-sm\"></div><div class=\"col-sm\"><h4>Repair Job</h4><p class=\"ml-5\" id=\"outputJobNumber\">Job number:</p><p class=\"ml-5\" id=\"outputInvoice\">Invoice Date:</p></div></div></div><hr><div class=\"container\"><div class=\"row\"><div class=\"col-sm\"><div><h2>Repair Details</h2></div><div><p id=\"outPutpurchaseDate\">Purcahse Date:</p><p id=\"outputRepairDate\">Repair Date:</p><p id=\"outputWarrenty\">Under Warrenty:</p><p id=\"outputIMEINumber\">IMEI Number:</p><p id=\"outputDeviceMake\">Device Make:</p><p id=\"outputFault\">Fault category:</p><p id=\"outputDescription\">Description:</p><h4>Cortesy Phone:</h4><p id=\"outputItems\">Item(s):</p><p id=\"outputCost\">Cost:</p></div><div class=\"col-sm\"></div></div></div></div><div class=\"container\"><div class=\"row\"><div class=\"col-sm\"><div><div class=\"col-sm\"></div><div class=\"text-right px-4 py-2\"><div class=\"col-sm\"><h2>Totals</h2><p id=\"outputBond\">Bond:</p><p id=\"outputServiceFee\">Service Fee:</p><p id=\"outputTotal\">Total:</p><p id=\"outputGST\">GST:</p><p id=\"outputTotalGST\">Total(+GST):</p></div></div></div></div></div></div></div><hr><div class=\"px-5\"><h4>WeFixPhones&co</h4><p>+64 021234567</p><p>wefixphones@example.co.nz</p><p onload=\"displayInvoices()\">4322 Ritter Street, Anniston, Basin, New Zealand, 4543</p></div></body><script type=\"text/javascript\">displayInvoices();</script></html>");
         //displayInvoices();
 
     }
@@ -210,26 +227,31 @@ function addInvoice(consumerData, businessData, firstNameData, lastNameData, pho
 }
 
 
-
+//Placeholder is the index number of the database that this code will access. This allows the user to go back, and forward through the invoices.
 var placeholder = 1;
 var placeHolderSettable = true;
 
 function setplaceHolder() {
+    //Read more here: https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore/count
+    //once called by the display function this code below opens a new instance of the database, then counts the databas and sets the placeholder (newest entry). Once the placeholder is set, this is then displayed.
     if (placeHolderSettable == true) {
-        //This function only runs once. This is to get the lastest entry in the databse to bring up the last entered item.
+        //Open databse 
         var transaction = db.transaction(['invoice'], 'readonly');
         var objectStore = transaction.objectStore('invoice');
-
+        //Request a count
         var countRequest = objectStore.count();
-        //This code counts the database.
         countRequest.onsuccess = function () {
-            //Once counted the placeholder is set, this is so the code can find this item with the index later.
-            placeholder = countRequest.result;
+            console.log(countRequest.result + 1);
+            //Set placeholder to the display function will now display the newest entry. +1 needs to be added as the count starts from 0 and the get starts from 0.
+            placeholder = countRequest.result + 1;
+            //Set placeholder to false so it does not activate again unless the page is reloaded.
+            placeHolderSettable = false;
+            //Calls display, now with the new placeholder
+            displayInvoices();
         }
     }
-    //To make this code is run once the the placeHolderSettable variable will be set to false so it will not run again (only if the website is reloaded).
-    placeHolderSettable = false;
 }
+
 
 function next() {
     //Adds one to the placeholder, this is so the object can be found.
@@ -257,7 +279,6 @@ function previous() {
 
 function displayInvoices() {
     //calls setPlaceholder to get the lastest item if the page has JUST been loaded.
-    setplaceHolder();
 
     //Requests to open the databse again.
     var request = window.indexedDB.open("PhoneRepairSystem", 1);
@@ -294,11 +315,11 @@ function displayInvoices() {
 
             var date = Date();
 
-            document.getElementById('outputInvoice').innerText = "Invoice Date: "; + date.toString();
+            document.getElementById('outputInvoice').innerText = "Invoice Date: " + date.toString();
             //document.getElementById('outputPaymentDue').innerText = "Payment Due: ";// +date.setDate(date.getDate + 5).toString();
             document.getElementById('outPutpurchaseDate').innerText = "Purcahse Date: " + event.target.result.purcahseDate;
             document.getElementById('outputRepairDate').innerText = "Repair Date: " + event.target.result.repairDate;
-            if (event.target.result.underWarrenty == "Under Warrenty") {
+            if (event.target.result.underWarrenty == true) {
                 document.getElementById('outputWarrenty').innerText = "Under Warrenty: " + "✔";
             } else {
                 document.getElementById('outputWarrenty').innerText = "Under Warrenty: " + "✖";
@@ -308,7 +329,7 @@ function displayInvoices() {
 
             document.getElementById('outputDeviceMake').innerText = "Device Make: " + event.target.result.selectedMake;
 
-            document.getElementById('outputFault').innerText = "Fault category: " + event.target.result.fault;
+            document.getElementById('outputFault').innerText = "Fault category: " + event.target.result.selectedFault;
 
             document.getElementById('outputDescription').innerText = "Description: " + event.target.result.description;
 
@@ -326,16 +347,19 @@ function displayInvoices() {
             //innerText = event.target.result.repairDate.toString();
             document.getElementById('outputPostCode').innerText = "PostCode: " + event.target.result.postCode;
             //console.log(event.target.result.street);
+
+
+            if (placeHolderSettable == true) {
+                setplaceHolder();
+                //Look, I'm gonna be honest this code is not perfect but it works. 
+                //This code is a work around for an issue with opening the database with setplaceHolder();
+            }
         };
 
     };
-
 }
 
 //Database-----------------------------------------------------------
-
-
-
 
 
 

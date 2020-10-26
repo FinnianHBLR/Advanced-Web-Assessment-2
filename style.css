@@ -117,3 +117,33 @@ footer{
     justify-content: center;
 
 }
+
+
+
+
+/*Read more here: https://www.w3schools.com/howto/howto_css_next_prev.asp and https://www.w3schools.com/cssref/css_selectors.asp*/
+.selbutton,a {
+    text-decoration: none;
+    display: inline-block;
+    padding: 8px 16px;
+  }
+  
+.selbutton,a:hover {
+    background-color: #ddd;
+    color: black;
+  }
+  
+  .previous {
+    background-color: #5E9E9E;
+    color: white;
+  }
+  
+  .next {
+    background-color: #EA967A;
+    color: white;
+  }
+  
+  .round {
+    border-radius: 50%;
+}
+  

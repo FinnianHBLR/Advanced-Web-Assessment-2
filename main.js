@@ -50,7 +50,7 @@ function validate() {
         addInvoice(consumer, business, firstName, lastName, phoneNumber, email, purcahseDate, repairDate, underWarrenty, IMEI, street, suburb, city, postCode, selectedTitle, selectedMake, selectedCoutesyPhone, selectedFault, description, modelNumber);
 
         var opened = window.open("");
-        opened.document.write("<!DOCTYPE html><html><head><script src=\"main.js\"></script></head><body><section><hr><h1>Exercise 3: Use IndexedDB API to create database for \"Phone Fix Booking System\"</h1><div id=\"allInvoices\" class=\"all-invoices\"></div><table id=\"invoice_table\"></table></section><script type=\"text/javascript\">displayInvoices();</script></body></html>");
+        opened.document.write("<!DOCTYPE html><html><head><script src=\"main.js\"></script><link rel=\"stylesheet\" href=\"style.css\"></head><body><section><hr><h1>Exercise 3: Use IndexedDB API to create database for \"Phone Fix Booking System\"</h1><div id=\"allInvoices\" class=\"all-invoices\"></div><table id=\"invoice_table\"></table></section><script type=\"text/javascript\">displayInvoices();</script><a class=\"previous round selbutton\" onclick=\"previous()\">&#8249;</a><a class=\"next round selbutton\" onclick=\"next()\">&#8250;</a></body></html>");
         //displayInvoices();
 
     }
@@ -196,6 +196,29 @@ function addInvoice(consumerData, businessData, firstNameData, lastNameData, pho
 }
 
 
+
+var placeholder = 1;
+
+function next(){
+placeholder = placeholder + 1;
+displayInvoices();
+
+}
+
+function previous() {
+    //Avoids going into negatives.
+    if(placeholder == 1) {
+
+    } else {
+        placeholder = placeholder - 1;
+        displayInvoices();
+    }
+}
+
+
+
+
+
 function displayInvoices() {
     //Wais for databse to be open before displaying.
     request.onsuccess = function (event) {
@@ -217,7 +240,7 @@ function displayInvoices() {
         objectStore.openCursor().onsuccess = function (event) {
             var cursor = event.target.result;
             //For each cursor (each invoice object), get invoice info and add it to the "invoice_table"
-            if (cursor) {
+            if (cursor.key == placeholder) {
                 //Add a new row inside the invoice_table to display invoice info
                 id = cursor.key;
                 consumer = cursor.value.consumer;

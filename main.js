@@ -37,20 +37,33 @@ function validate() {
         var make = document.getElementById("make");
         var selectedMake = make.options[make.selectedIndex].text;
 
-        var courtesyPhone = document.getElementById('courtesyPhone');
-        var selectedCoutesyPhone = courtesyPhone.options[courtesyPhone.selectedIndex].text;
+        //var courtesyPhone = document.getElementById('courtesyPhone');
+        //var selectedCoutesyPhone = courtesyPhone.options[courtesyPhone.selectedIndex].text;
+
+        var selectedCoutesyPhone = document.getElementById("itemCostTable").rows[1].cells[0].innerHTML + " " + document.getElementById("itemCostTable").rows[2].cells[0].innerHTML;
 
         var fault = document.getElementById('fault');
         var selectedFault = fault.options[fault.selectedIndex].text;
 
         var description = document.getElementById('description').value;
 
+        //var bond = "test";
+        //var serviceFee = "test";
+        //var total = "test";
+        //var totalGst = "test";
+        //var gst = "test";
+
+        var bond = document.getElementById('bond').value;
+        var serviceFee = document.getElementById('serviceFee').value;
+        var total = document.getElementById('total').value;
+        var totalGst = document.getElementById('totalGST').value;
+        var gst = document.getElementById('gst').value;
         //console.log(customer);
 
-        addInvoice(consumer, business, firstName, lastName, phoneNumber, email, purcahseDate, repairDate, underWarrenty, IMEI, street, suburb, city, postCode, selectedTitle, selectedMake, selectedCoutesyPhone, selectedFault, description, modelNumber);
+        addInvoice(consumer, business, firstName, lastName, phoneNumber, email, purcahseDate, repairDate, underWarrenty, IMEI, street, suburb, city, postCode, selectedTitle, selectedMake, selectedCoutesyPhone, selectedFault, description, modelNumber, bond, serviceFee, total, totalGst, gst);
 
         var opened = window.open("");
-        opened.document.write("<!DOCTYPE html><html><head><script src=\"main.js\"></script><link rel=\"stylesheet\" href=\"style.css\"></head><body><section><hr><h1>Exercise 3: Use IndexedDB API to create database for \"Phone Fix Booking System\"</h1><div id=\"allInvoices\" class=\"all-invoices\"></div><table id=\"invoice_table\"></table></section><script type=\"text/javascript\">displayInvoices();</script><a class=\"previous round selbutton\" onclick=\"previous()\">&#8249;</a><a class=\"next round selbutton\" onclick=\"next()\">&#8250;</a></body></html>");
+        opened.document.write("<!DOCTYPE html><html><head><script src=\"main.js\"></script><link rel=\"stylesheet\" href=\"style.css\"><script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js\"></script><link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css\"integrity=\"sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z\" crossorigin=\"anonymous\"><script src=\"https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js\"integrity=\"sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV\"crossorigin=\"anonymous\"></script><script src=\"https://code.jquery.com/jquery-3.5.1.slim.min.js\"integrity=\"sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj\"crossorigin=\"anonymous\"></script><script src=\"https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js\"integrity=\"sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN\"crossorigin=\"anonymous\"></script></head><body><section><div class=\"repair\"><h1>Repair Booking</h1><h3 class=\"text-right px-3\">Amount Due</h3><h4 class=\"text-right px-3\" id=\"outputAmountDue\"></h4></div></section><script type=\"text/javascript\">displayInvoices();</script><div class=\"text-center\"><a class=\"previous round selbutton\" onclick=\"previous()\">&#8249;</a><a class=\"next round selbutton\" onclick=\"next()\">&#8250;</a></div><div class=\"px-2\"><div class=\"container\"><div class=\"row\"><div class=\"col-sm\"><h4>Customer</h4><p id=\"outPutfullName\">Full Name:</p><p id=\"outputStreet\">Street:</p><p id=\"outputSuburb\">Suburb:</p><p id=\"outputCity\">City:</p><p id=\"outputPostCode\">PostCode:</p><p id=\"outputPhoneNumber\">Phone Number</p><p id=\"outputEmail\">Email:</p></div><div class=\"col-sm\"></div><div class=\"col-sm\"><h4>Repair Job</h4><p class=\"ml-5\" id=\"outputJobNumber\">Job number:</p><p class=\"ml-5\" id=\"outputInvoice\">Invoice Date:</p></div></div></div><hr><div class=\"container\"><div class=\"row\"><div class=\"col-sm\"><div><h2>Repair Details</h2></div><div><p id=\"outPutpurchaseDate\">Purcahse Date:</p><p id=\"outputRepairDate\">Repair Date:</p><p id=\"outputWarrenty\">Under Warrenty:</p><p id=\"outputIMEINumber\">IMEI Number:</p><p id=\"outputDeviceMake\">Device Make:</p><p id=\"outputFault\">Fault category:</p><p id=\"outputDescription\">Description:</p><h4>Cortesy Phone:</h4><p id=\"outputItems\">Item(s):</p><p id=\"outputCost\">Cost:</p></div><div class=\"col-sm\"></div></div></div></div><div class=\"container\"><div class=\"row\"><div class=\"col-sm\"><div><div class=\"col-sm\"></div><div class=\"text-right px-4 py-2\"><div class=\"col-sm\"><h2>Totals</h2><p id=\"outputBond\">Bond:</p><p id=\"outputServiceFee\">Service Fee:</p><p id=\"outputTotal\">Total:</p><p id=\"outputGST\">GST:</p><p id=\"outputTotalGST\">Total(+GST):</p></div></div></div></div></div></div></div><hr><div class=\"px-5\"><h4>WeFixPhones&co</h4><p>+64 021234567</p><p>wefixphones@example.co.nz</p><p>4322 Ritter Street, Anniston, Basin, New Zealand, 4543</p></div></body></html>");
         //displayInvoices();
 
     }
@@ -110,7 +123,7 @@ request.onupgradeneeded = function (event) {
 
 
 //Adding to database
-function addInvoice(consumerData, businessData, firstNameData, lastNameData, phoneNumberData, emailData, purchaseDateData, repairDateData, warrentyData, IMEIData, streetData, suburbData, cityData, postCodeData, titleData, makeData, courtesyPhoneData, faultData, descriptionData, modelData) {
+function addInvoice(consumerData, businessData, firstNameData, lastNameData, phoneNumberData, emailData, purchaseDateData, repairDateData, warrentyData, IMEIData, streetData, suburbData, cityData, postCodeData, titleData, makeData, courtesyPhoneData, faultData, descriptionData, modelData, bond, serviceFee, total, totalGST, gst) {
     //Get data entered
     //consumer, business, firstName, lastName, phoneNumber, email, purcahseDate, repairDate, underWarrenty, IMEI, street, suburb, city, postCode, selectedTitle, selectedMake, selectedCoutesyPhone, selectedFault, description, modelNumber);
     var consumer = consumerData;
@@ -133,12 +146,13 @@ function addInvoice(consumerData, businessData, firstNameData, lastNameData, pho
     var selectedFault = faultData;
     var description = descriptionData;
     var modelNumber = modelData;
+    var bond = bond;
+    var serviceFee = serviceFee;
+    var total = total;
+    var totalGST = totalGST;
+    var gst = gst;
 
-
-    let total_cost = 'test';
-    let GST = 'test';
-
-    let invoiceID = 0;
+    var invoiceID = 0;
 
     //ASYNCHRONOOUS TRANSACTION: ISSUE
     //Traverse all the records of the data table by using the pointer object IDBCursor
@@ -180,7 +194,7 @@ function addInvoice(consumerData, businessData, firstNameData, lastNameData, pho
                     email: email, purcahseDate: purcahseDate, repairDate: repairDate,
                     underWarrenty: underWarrenty, IMEI: IMEI, street: street, suburb: suburb, city: city,
                     postCode: postCode, selectedTitle: selectedTitle, selectedMake: selectedMake, selectedCoutesyPhone: selectedCoutesyPhone,
-                    selectedFault: selectedFault, description: description, modelNumber: modelNumber, total_cost: total_cost, GST: GST
+                    selectedFault: selectedFault, description: description, modelNumber: modelNumber, bond: bond, serviceFee: serviceFee, total: total, totalGST: totalGST, gst: gst
                 });
 
             //If the addition was successful, alert an successful message
@@ -198,20 +212,42 @@ function addInvoice(consumerData, businessData, firstNameData, lastNameData, pho
 
 
 var placeholder = 1;
+var placeHolderSettable = true;
 
-function next(){
-placeholder = placeholder + 1;
-displayInvoices();
+function setplaceHolder() {
+    if (placeHolderSettable == true) {
+        //This function only runs once. This is to get the lastest entry in the databse to bring up the last entered item.
+        var transaction = db.transaction(['invoice'], 'readonly');
+        var objectStore = transaction.objectStore('invoice');
+
+        var countRequest = objectStore.count();
+        //This code counts the database.
+        countRequest.onsuccess = function () {
+            //Once counted the placeholder is set, this is so the code can find this item with the index later.
+            placeholder = countRequest.result;
+        }
+    }
+    //To make this code is run once the the placeHolderSettable variable will be set to false so it will not run again (only if the website is reloaded).
+    placeHolderSettable = false;
+}
+
+function next() {
+    //Adds one to the placeholder, this is so the object can be found.
+    placeholder = placeholder + 1;
+    displayInvoices();
+    //Calls display so the new item can be displayed
 
 }
 
 function previous() {
+    //Takes away one from the placeholder, this is so the object can be found.
     //Avoids going into negatives.
-    if(placeholder == 1) {
-
+    if (placeholder == 1) {
+        //Don't change the number
     } else {
         placeholder = placeholder - 1;
         displayInvoices();
+        //Calls display so the new item can be displayed
     }
 }
 
@@ -220,68 +256,76 @@ function previous() {
 
 
 function displayInvoices() {
+    //calls setPlaceholder to get the lastest item if the page has JUST been loaded.
+    setplaceHolder();
+
+    //Requests to open the databse again.
+    var request = window.indexedDB.open("PhoneRepairSystem", 1);
     //Wais for databse to be open before displaying.
+    //If succsessful return the result 
+
     request.onsuccess = function (event) {
         db = request.result;
         //console.log("success: " + db);
 
-        //Get the entire object store "invoice" which contains all invoice info
-        var objectStore = db.transaction("invoice").objectStore("invoice");
-        //Get "table" element
-        var invoice_table = document.getElementById("invoice_table");
-        var row, cell;
-        var id, consumer, business, firstName, lastName, phoneNumber, email, purcahseDate, repairDate, underWarrenty, IMEI, street, suburb,
-            city, postCode, selectedTitle,
-            selectedMake, selectedCoutesyPhone, selectedFault, description, modelNumber, total_cost, GST;
-        var allInfo = "";
+        //Read more :https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB
+        //Then use the result to find the object.
+        db.transaction("invoice").objectStore("invoice").get(placeholder).onsuccess = function (event) {
+            //From the found object, log out the information.
 
-        //If the "get" transaction was successful, traverse all the records of the data table
-        // by using the pointer object IDBCursor
-        objectStore.openCursor().onsuccess = function (event) {
-            var cursor = event.target.result;
-            //For each cursor (each invoice object), get invoice info and add it to the "invoice_table"
-            if (cursor.key == placeholder) {
-                //Add a new row inside the invoice_table to display invoice info
-                id = cursor.key;
-                consumer = cursor.value.consumer;
-                business = cursor.value.business;
-                firstName = cursor.value.firstName;
-                lastName = cursor.value.lastName;
-                phoneNumber = cursor.value.phoneNumber;
-                email = cursor.value.email;
-                purcahseDate = cursor.value.purcahseDate;
-                repairDate = cursor.value.repairDate;
-                underWarrenty = cursor.value.underWarrenty;
-                IMEI = cursor.value.IMEI;
-                street = cursor.value.street;
-                suburb = cursor.value.suburb;
-                city = cursor.value.city;
-                postCode = cursor.value.postCode;
-                selectedTitle = cursor.value.selectedTitle;
-                selectedMake = cursor.value.selectedMake;
-                selectedCoutesyPhone = cursor.value.selectedCoutesyPhone;
-                selectedFault = cursor.value.selectedFault;
-                description = cursor.value.description;
-                modelNumber = cursor.value.modelNumber;
+            //DEBUG console.log(event.target.result.consumer);
+            //DEBUG: console.log("Full Name: " + event.target.result.selectedTitle + " "+ event.target.result.firstName + " " + event.target.result.lastName);
 
-                total_cost = cursor.value.total_cost;
-                GST = cursor.value.GST;
-                //
-                allInfo += "ID: " + id + ". consumer: " + consumer + ". Firstname: " + firstName + ". Lastname: " + lastName + ". PhoneNumber " + phoneNumber
-                    + ". email: " + email + ". purchaseDate: " + purcahseDate + ". RepairDate: " + repairDate + ". underWarrenty " + underWarrenty
-                    + ". IMEI " + IMEI + ". Street: " + street + ". Suburb: " + suburb + ". City " + city + ". PostCode: " + postCode + ". Title "
-                    + selectedTitle + ". SlectedMake: " + selectedMake + ". SelectedCoutesyPhone: " + selectedCoutesyPhone + ". SelectedFault: "
-                    + selectedFault + ". description: " + description + ". modelNumber: " + modelNumber
-                    + ". total_cost: " + total_cost + ". GST: " + GST + "<br>";
+            document.getElementById('outPutfullName').innerText = "Full Name: " + event.target.result.selectedTitle + " " + event.target.result.firstName + " " + event.target.result.lastName;
 
-                //Move to next object
-                cursor.continue();
+            document.getElementById('outputStreet').innerText = "Street: " + event.target.result.street;
 
+            document.getElementById('outputSuburb').innerText = "Suburb: " + event.target.result.suburb;
+
+            document.getElementById('outputCity').innerText = "City: " + event.target.result.city;
+
+            document.getElementById('outputPhoneNumber').innerText = "Phone Number: " + event.target.result.phoneNumber;
+
+            document.getElementById('outputEmail').innerText = "Email: " + event.target.result.email;
+
+            //Set the job number to the id.
+            document.getElementById('outputJobNumber').innerText = "Job number: " + event.target.result.id;
+            //Sets the invoice date to the day the form was created.
+
+            var date = Date();
+
+            document.getElementById('outputInvoice').innerText = "Invoice Date: "; + date.toString();
+            //document.getElementById('outputPaymentDue').innerText = "Payment Due: ";// +date.setDate(date.getDate + 5).toString();
+            document.getElementById('outPutpurchaseDate').innerText = "Purcahse Date: " + event.target.result.purcahseDate;
+            document.getElementById('outputRepairDate').innerText = "Repair Date: " + event.target.result.repairDate;
+            if (event.target.result.underWarrenty == "Under Warrenty") {
+                document.getElementById('outputWarrenty').innerText = "Under Warrenty: " + "✔";
             } else {
-                //alert("No more entries!");
+                document.getElementById('outputWarrenty').innerText = "Under Warrenty: " + "✖";
             }
-            //
-            document.getElementById("allInvoices").innerHTML = allInfo;
+
+            document.getElementById('outputIMEINumber').innerText = "IMEI Number: " + event.target.result.IMEI;
+
+            document.getElementById('outputDeviceMake').innerText = "Device Make: " + event.target.result.selectedMake;
+
+            document.getElementById('outputFault').innerText = "Fault category: " + event.target.result.fault;
+
+            document.getElementById('outputDescription').innerText = "Description: " + event.target.result.description;
+
+            document.getElementById('outputItems').innerText = "Item(s): " + event.target.result.selectedCoutesyPhone;
+
+            document.getElementById('outputCost').innerText = "Cost: $" + event.target.result.bond;
+
+            document.getElementById('outputBond').innerText = innerText = "Bond: " + event.target.result.bond
+
+            document.getElementById('outputServiceFee').innerText = "Service Fee: $" + event.target.result.serviceFee;
+            document.getElementById('outputTotal').innerText = "Total: $" + event.target.result.total;
+            document.getElementById('outputGST').innerText = "GST: $" + event.target.result.gst;
+            document.getElementById('outputTotalGST').innerText = "Total(+GST): $" + event.target.result.totalGST;
+            document.getElementById('outputAmountDue').innerText = "$" + event.target.result.totalGST;
+            //innerText = event.target.result.repairDate.toString();
+            document.getElementById('outputPostCode').innerText = "PostCode: " + event.target.result.postCode;
+            //console.log(event.target.result.street);
         };
 
     };

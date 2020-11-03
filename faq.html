@@ -12,6 +12,7 @@
     <!--JS-->
     <!--Loading faq.js to make things easier-->
     <script src="faq.js"></script>
+    <script src="main.js"></script>
 
     <!--JQuerry-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -33,11 +34,32 @@
         crossorigin="anonymous"></script>
 
 </head>
-<header>
-    <h1>Phone Booking System</h1>
+<header id="customHeader">
+    
+    <h1>Phone Booking System FAQ?</h1>
+    <div class="d-flex flex-row-reverse">
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="extension.html">Extension</a></li>
+        </ul>
+    </nav>
+</div>
+    <div class="d-flex flex-row-reverse">
+        
+        <div class="col-sm-2">
+            <select class="form-control form-control-sm" id="theme" onclick="changeTheme()">
+                <option>Default</option>
+                <option>Orange</option>
+                <option>Teal</option>
+            </select>
+        </div>
+        <label class="col-sm-2 col-form-label">Theme:</label>
+    </div>
+
 </header>
 
-<body onload="loadXMLDoc()">
+<body onload="loadXMLDoc(), onloadCookie()">
     <!--Search Function-->
     <input type="text" id="searchBox" class="form-control" onkeyup="searchCards()" placeholder="Enter Search...">
 
@@ -46,7 +68,7 @@
     
 </div>
 
-<footer class="footer">
+<footer class="footer" id="customFooter">
     <div class="d-flex justify-content-center">
         <p class="py-3">Advanced Web Design, Copyright © BCS - EIT</p>
     </div>

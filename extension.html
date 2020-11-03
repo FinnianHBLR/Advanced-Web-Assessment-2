@@ -35,68 +35,87 @@
 </head>
 
 <header id="customHeader">
-    <h1>Extension Things</h1>
+    <h1>Phone Booking System Extension</h1>
+    <div class="d-flex flex-row-reverse">
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="extension.html">Extension</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="d-flex flex-row-reverse">
+
+        <div class="col-sm-2">
+            <select class="form-control form-control-sm" id="theme" onclick="changeTheme()">
+                <option>Default</option>
+                <option>Orange</option>
+                <option>Teal</option>
+            </select>
+        </div>
+        <label class="col-sm-2 col-form-label">Theme:</label>
+    </div>
+
 </header>
 
 <body onload="onloadCookie()">
-    
+
     <div class="container">
-        <div class="card w-100 text-white bg-dark mb-3">
+        <div class="card w-100 text-white bg-dark my-3">
             <div class="card-body">
-              <h5 class="card-title">Statement of authenticity</h5>
-              <p class="card-text">I confirm that: This is an original assessment and is entirely my own work. It contains no material previously published or written by another person or myself except wheredue acknowledgement is made in the text. No material which to a substantial extent, has been submitted for any other academic course, isincluded without acknowledgement.</p>
-            </div>
-          </div>
-
-        <div class="card w-100 mb-3">
-            <div class="card-body">
-            <h5 class="card-title">1. Search Feature</h5>
-            <p class="card-text">JS Search is used to search for cards by title.</p>
-            <input class="btn btn-light mx-2 px-4" type="button" value="See Search" onclick="openFAQ()">
+                <h5 class="card-title">Statement of authenticity</h5>
+                <p class="card-text">I confirm that: This is an original assessment and is entirely my own work. It
+                    contains no material previously published or written by another person or myself except wheredue
+                    acknowledgement is made in the text. No material which to a substantial extent, has been submitted
+                    for any other academic course, isincluded without acknowledgement.</p>
             </div>
         </div>
 
         <div class="card w-100 mb-3">
             <div class="card-body">
-            <h5 class="card-title">2. UX Save Theme</h5>
-            <p class="card-text">Using Cookies we can remember what you set your theme to!.</p>
+                <h5 class="card-title">1. Search Feature</h5>
+                <p class="card-text">JS Search is used to search for cards by title.</p>
+                <input class="btn btn-light mx-2 px-4" type="button" value="See Search" onclick="openFAQ()">
+            </div>
         </div>
-            <div class="container py-2">
-                <label class="col-sm-5 col-form-label">Theme:</label>
-                <div class="col-sm-6">
-                    <select class="form-control form-control-sm" id="theme" onclick="changeTheme()">
-                        <option>Default</option>
-                        <option>Orange</option>
-                        <option>Teal</option>
-                    </select>
+
+        <div class="card w-100 mb-3">
+            <div class="card-body">
+                <h5 class="card-title">2. UX Save Theme</h5>
+                <p class="card-text">As seen on most pages on the top right cookies are used to remember what you set
+                    your theme to!</p>
+                <h6>Current options</h6>
+                <p>•Default</p>
+                <p>•Orange</p>
+                <p>•Teal</p>
+            </div>
+        </div>
+            <div class="card w-100 mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">3. WebGL or any JS libraries (PS.JS, Three.JS)</h5>
+                    <p class="card-text">To display all available 3D courtesy phones</p>
+                    <input class="btn btn-light mx-2 px-4" type="button" value="See Search" onclick="openFAQ()">
+                </div>
+            </div>
+            <div class="card w-100 mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">4. “file upload” feature</h5>
+                    <p class="card-text">allows users to upload the image of the repair phones & display the image on
+                        the page for viewing as well.</p>
+                    <input class="btn btn-light mx-2 px-4" type="button" value="See Search" onclick="openFAQ()">
+                </div>
+            </div>
+            <div class="card w-100 mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">5. “address search & auto completion”</h5>
+                    <p class="card-text">To auto complete the address fields</p>
+                    <input class="btn btn-light mx-2 px-4" type="button" value="See Search" onclick="openFAQ()">
                 </div>
             </div>
         </div>
-
-        <div class="card w-100 mb-3">
-            <div class="card-body">
-            <h5 class="card-title">3. Search Feature</h5>
-            <p class="card-text">JS Search is used to search for cards by title.</p>
-            <input class="btn btn-light mx-2 px-4" type="button" value="See Search" onclick="openFAQ()">
-            </div>
-        </div>
-        <div class="card w-100 mb-3">
-            <div class="card-body">
-            <h5 class="card-title">4. Search Feature</h5>
-            <p class="card-text">JS Search is used to search for cards by title.</p>
-            <input class="btn btn-light mx-2 px-4" type="button" value="See Search" onclick="openFAQ()">
-            </div>
-        </div>
-        <div class="card w-100 mb-3">
-            <div class="card-body">
-            <h5 class="card-title">5. Search Feature</h5>
-            <p class="card-text">JS Search is used to search for cards by title.</p>
-            <input class="btn btn-light mx-2 px-4" type="button" value="See Search" onclick="openFAQ()">
-            </div>
-        </div>
-    </div>
     </div>
 </body>
+<p>Map API or something?</p>
 
 <footer class="footer pt-3" id="customFooter">
     <div class="d-flex justify-content-center">

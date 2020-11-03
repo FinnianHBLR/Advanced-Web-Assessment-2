@@ -758,7 +758,7 @@ function onloadCookie(){
         if(document.cookie == "#2a3a4a") {
             
         } else {
-            alertUser("We saw you liked " + document.cookie + " so we saved it just for you");
+            //alertUser("We saw you liked " + document.cookie + " so we saved it just for you");
             if(document.cookie == "Orange") {
                 document.getElementById("theme").selectedIndex = 1;
             } else {

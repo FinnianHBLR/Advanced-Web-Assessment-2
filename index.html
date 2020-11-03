@@ -32,19 +32,19 @@
         crossorigin="anonymous"></script>
 
 </head>
-<header>
+<header id="customHeader">
     <h1>Phone Booking System</h1>
     <nav>
         <ul>
             <li><a href="#">Home</a></li>
-            <li><a href="#">Extension</a></li>
+            <li><a href="extension.html">Extension</a></li>
         </ul>
 
     </nav>
 </header>
 
 
-<body onload="upDateCosts()">
+<body onload="upDateCosts(), onloadCookie()">
     <main>
         <div class="formLayout">
             <section class="customerDetails container">
@@ -325,14 +325,16 @@
                 <div class="my-4 d-flex justify-content-center">
                     <input class="btn btn-danger mx-2 px-4 danger" type="button" value="Reset" onclick="reset()">
                     <input class="btn btn-primary mx-2 px-4" type="button" value="Submit" onclick="validate()">
-                    <input class="btn btn-light mx-2 px-4" type="button" value="FAQ?">
+                    
+                    <input class="btn btn-light mx-2 px-4" type="button" value="FAQ?" onclick="openFAQ()">
+                    
                 </div>
             </section>
         </div>
     </main>
 
 </body>
-<footer class="footer">
+<footer class="footer" id="customFooter">
     <div class="d-flex justify-content-center">
         <p class="py-3">Advanced Web Design, Copyright © BCS - EIT</p>
     </div>

@@ -716,3 +716,58 @@ function reset() {
     upDateCosts();
 }
 
+function openFAQ() {
+    //Opens the FAQ file.
+    window.open("faq.html");
+}
+
+function changeTheme() {
+    //Read More about Cookies Here: https://www.w3schools.com/js/tryit.asp?filename=tryjs_cookie_username
+    //var currentTheme = document.getElementById()
+    //document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+
+    //Set cookie here. 
+    var color = document.getElementById("theme");
+    var selectedcolor = color.options[color.selectedIndex].text;
+
+    if (selectedcolor == "Default") {
+        document.getElementById("customHeader").style.backgroundColor = "#2a3a4a";
+        document.getElementById("customFooter").style.backgroundColor = "#2a3a4a";
+        setCookie("#2a3a4a");
+    } else {
+        document.getElementById("customHeader").style.backgroundColor = selectedcolor;
+        document.getElementById("customFooter").style.backgroundColor = selectedcolor;
+        setCookie(selectedcolor);
+    }
+
+        
+}
+
+function setCookie(color){
+    document.cookie = color + ";path=/";
+    
+}
+
+function onloadCookie(){
+    try{
+        document.getElementById("customHeader").style.backgroundColor = document.cookie;
+        document.getElementById("customFooter").style.backgroundColor = document.cookie;
+        
+        console.log("Trying to reload Cookie " + document.cookie);
+
+        if(document.cookie == "#2a3a4a") {
+            
+        } else {
+            alertUser("We saw you liked " + document.cookie + " so we saved it just for you");
+            if(document.cookie == "Orange") {
+                document.getElementById("theme").selectedIndex = 1;
+            } else {
+                document.getElementById("theme").selectedIndex = 2;
+            }
+        }
+        
+    } catch(e) {
+        console.log("Cookie Error");
+    }
+    
+}

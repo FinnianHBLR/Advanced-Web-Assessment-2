@@ -1,7 +1,5 @@
-
-
 function validate() {
-    newArray = new Array();
+    //This function validates all inputs before they can be saved to the database. If a function returns flase the validate has failed.
 
     if (validationFirstAndLastName() == false) {
         return;
@@ -16,7 +14,7 @@ function validate() {
     } else if (validateIMEI() == false) {
         return;
     } else {
-
+    //Below is where variables get set to inputs, this is so they can be stored.
         var consumer = document.getElementById('consumer').checked;
         var business = document.getElementById('business').checked;
         var firstName = document.getElementById('firstName').value;
@@ -27,7 +25,7 @@ function validate() {
         var repairDate = document.getElementById('repairDate').value;
         //var underWarrenty = validateWarrenty();//This only needs to check if it is under warrenty.
         if ($('#warrenty').is(':checked') && validateWarrenty() == "Under Warrenty") {
-            //This means that if the user accidentally left the warrenty box checked, then the purchase date is invalid it will avoid a warrenty being applied.
+            //Although not on requirements this code means that if the user accidentally left the warrenty box checked, then the purchase date is invalid it will avoid a warrenty being applied.
             underWarrenty = true;
         } else {
             underWarrenty = false;
@@ -39,7 +37,8 @@ function validate() {
         var city = document.getElementById('city').value;
         var postCode = document.getElementById('postCode').value;
         var modelNumber = document.getElementById('modelNumber').value;
-
+        
+        //To get the selected value from title and make this uses an index.
         var title = document.getElementById("title");
         var selectedTitle = title.options[title.selectedIndex].text;
 
@@ -49,7 +48,7 @@ function validate() {
         //var courtesyPhone = document.getElementById('courtesyPhone');
         //var selectedCoutesyPhone = courtesyPhone.options[courtesyPhone.selectedIndex].text;
 
-        //Below is code in case the user has not entered any cortesy equipment, or only half.
+        //Below is code in case the user has not entered any cortesy equipment, or only half (This would normally cause an error).
         try {
             var selectedCoutesyPhone = document.getElementById("itemCostTable").rows[1].cells[0].innerHTML + " " + document.getElementById("itemCostTable").rows[2].cells[0].innerHTML;
         } catch (e) {
@@ -60,18 +59,19 @@ function validate() {
             }
         }
 
-
+        
         var fault = document.getElementById('fault');
         var selectedFault = fault.options[fault.selectedIndex].text;
 
         var description = document.getElementById('description').value;
-
+        //Debug presets:
         //var bond = "test";
         //var serviceFee = "test";
         //var total = "test";
         //var totalGst = "test";
         //var gst = "test";
 
+        //This code below gets the cost information directly from the form.
         var bond = document.getElementById('bond').value;
         var serviceFee = document.getElementById('serviceFee').value;
         var total = document.getElementById('total').value;
@@ -80,16 +80,17 @@ function validate() {
         //console.log(customer);
         //Calls the add invoice to add all the data defined above to the database.
         addInvoice(consumer, business, firstName, lastName, phoneNumber, email, purcahseDate, repairDate, underWarrenty, IMEI, street, suburb, city, postCode, selectedTitle, selectedMake, selectedCoutesyPhone, selectedFault, description, modelNumber, bond, serviceFee, total, totalGst, gst);
-
+        
+        //This calls windiow.open to open a new window with all form information.
         var opened = window.open("");
         opened.document.write("<!DOCTYPE html><html><head><script src=\"main.js\"></script><link rel=\"stylesheet\" href=\"style.css\"><script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js\"></script><link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css\"integrity=\"sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z\" crossorigin=\"anonymous\"><script src=\"https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js\"integrity=\"sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV\"crossorigin=\"anonymous\"></script><script src=\"https://code.jquery.com/jquery-3.5.1.slim.min.js\"integrity=\"sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj\"crossorigin=\"anonymous\"></script><script src=\"https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js\"integrity=\"sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN\"crossorigin=\"anonymous\"></script></head><body><section><div class=\"repair\"><h1>Repair Booking</h1><h3 class=\"text-right px-3\">Amount Due</h3><h4 class=\"text-right px-3\" id=\"outputAmountDue\"></h4></div></section><div class=\"text-center\"><a class=\"previous round selbutton\" onclick=\"previous()\">&#8249;</a><a class=\"next round selbutton\" onclick=\"next()\">&#8250;</a></div><div class=\"px-2\"><div class=\"container\"><div class=\"row\"><div class=\"col-sm\"><h4>Customer</h4><p id=\"outPutfullName\">Full Name:</p><p id=\"outputStreet\">Street:</p><p id=\"outputSuburb\">Suburb:</p><p id=\"outputCity\">City:</p><p id=\"outputPostCode\">PostCode:</p><p id=\"outputPhoneNumber\">Phone Number</p><p id=\"outputEmail\">Email:</p></div><div class=\"col-sm\"></div><div class=\"col-sm\"><h4>Repair Job</h4><p class=\"ml-5\" id=\"outputJobNumber\">Job number:</p><p class=\"ml-5\" id=\"outputInvoice\">Invoice Date:</p></div></div></div><hr><div class=\"container\"><div class=\"row\"><div class=\"col-sm\"><div><h2>Repair Details</h2></div><div><p id=\"outPutpurchaseDate\">Purcahse Date:</p><p id=\"outputRepairDate\">Repair Date:</p><p id=\"outputWarrenty\">Under Warrenty:</p><p id=\"outputIMEINumber\">IMEI Number:</p><p id=\"outputDeviceMake\">Device Make:</p><p id=\"outputFault\">Fault category:</p><p id=\"outputDescription\">Description:</p><h4>Cortesy Phone:</h4><p id=\"outputItems\">Item(s):</p><p id=\"outputCost\">Cost:</p></div><div class=\"col-sm\"></div></div></div></div><div class=\"container\"><div class=\"row\"><div class=\"col-sm\"><div><div class=\"col-sm\"></div><div class=\"text-right px-4 py-2\"><div class=\"col-sm\"><h2>Totals</h2><p id=\"outputBond\">Bond:</p><p id=\"outputServiceFee\">Service Fee:</p><p id=\"outputTotal\">Total:</p><p id=\"outputGST\">GST:</p><p id=\"outputTotalGST\">Total(+GST):</p></div></div></div></div></div></div></div><hr><div class=\"px-5\"><h4>WeFixPhones&co</h4><p>+64 021234567</p><p>wefixphones@example.co.nz</p><p onload=\"displayInvoices()\">4322 Ritter Street, Anniston, Basin, New Zealand, 4543</p></div></body><script type=\"text/javascript\">displayInvoices();</script></html>");
-        //displayInvoices();
+        //DEBUG: displayInvoices();
 
     }
 
 }
 
-console.log('logging');
+//console.log('logging');
 
 //DATABASE----------------------------------------------------------
 //Based of lab work.
@@ -117,7 +118,6 @@ request.onerror = function (event) {
 
 
 //If succsessful the database (db) and sends a request (request). As defined above.
-
 request.onsuccess = function (event) {
     db = request.result;
     console.log("success: " + db);
@@ -173,7 +173,6 @@ function addInvoice(consumerData, businessData, firstNameData, lastNameData, pho
 
     var invoiceID = 0;
 
-    //ASYNCHRONOOUS TRANSACTION: ISSUE
     //Traverse all the records of the data table by using the pointer object IDBCursor
     //Read more here: https://developer.mozilla.org/en-US/docs/Web/API/IDBCursor
 
@@ -196,7 +195,7 @@ function addInvoice(consumerData, businessData, firstNameData, lastNameData, pho
         }
     };
 
-    //WAIT UNTIL THE TRANSACTION COMPLETE ==> ADD NEW INVOICE
+    //waits for the transaction to be complete then it will add a new invoice with the information in the function.
     tx.oncomplete = function () {
         //Read back updated data once complete.
 
@@ -218,7 +217,7 @@ function addInvoice(consumerData, businessData, firstNameData, lastNameData, pho
 
             //If the addition was successful, alert an successful message
             request.onsuccess = function (event) {
-                alert("SUCCESSFUL! New invoice = " + invoiceID + " has been added to your database.");
+                alert("New invoice Created: " + invoiceID + ". This has been added to the database.");
             };
             //If the addition failed, alert an error message
             request.onerror = function (event) {
@@ -276,11 +275,8 @@ function previous() {
 }
 
 
-
-
-
 function displayInvoices() {
-    //calls setPlaceholder to get the lastest item if the page has JUST been loaded.
+    //calls setPlaceholder to get the lastest item if the page has JUST been loaded. This will only ever be loaded once per invoice open.
 
     //Requests to open the databse again.
     var request = window.indexedDB.open("PhoneRepairSystem", 1);
@@ -298,7 +294,8 @@ function displayInvoices() {
 
             //DEBUG console.log(event.target.result.consumer);
             //DEBUG: console.log("Full Name: " + event.target.result.selectedTitle + " "+ event.target.result.firstName + " " + event.target.result.lastName);
-
+            
+            //Sets the information in the form to the information in the DB below.
             document.getElementById('outPutfullName').innerText = "Full Name: " + event.target.result.selectedTitle + " " + event.target.result.firstName + " " + event.target.result.lastName;
 
             document.getElementById('outputStreet').innerText = "Street: " + event.target.result.street;
@@ -313,14 +310,16 @@ function displayInvoices() {
 
             //Set the job number to the id.
             document.getElementById('outputJobNumber').innerText = "Job number: " + event.target.result.id;
+            
             //Sets the invoice date to the day the form was created.
-
             var date = Date();
 
             document.getElementById('outputInvoice').innerText = "Invoice Date: " + date.toString();
             //document.getElementById('outputPaymentDue').innerText = "Payment Due: ";// +date.setDate(date.getDate + 5).toString();
             document.getElementById('outPutpurchaseDate').innerText = "Purcahse Date: " + event.target.result.purcahseDate;
             document.getElementById('outputRepairDate').innerText = "Repair Date: " + event.target.result.repairDate;
+            
+            //Sets check or cross if the phone is "under warrenty" or not.
             if (event.target.result.underWarrenty == true) {
                 document.getElementById('outputWarrenty').innerText = "Under Warrenty: " + "✔";
             } else {
@@ -353,15 +352,14 @@ function displayInvoices() {
 
             if (placeHolderSettable == true) {
                 setplaceHolder();
-                //Look, I'm gonna be honest this code is not perfect but it works. 
-                //This code is a work around for an issue with opening the database with setplaceHolder();
+                //This code is a work around for an issue with opening the database with setplaceHolder();. It is not perfect, but works.
             }
         };
 
     };
 }
 
-//Database-----------------------------------------------------------
+//Database end-----------------------------------------------------------
 
 
 
@@ -371,7 +369,6 @@ function validationFirstAndLastName() {
     var fnlnNameReject = /^[a-zA-Z\s-]+$/;
     var fn = document.getElementById("firstName").value;
     var ln = document.getElementById("lastName").value;
-
 
     if (fn.match(fnlnNameReject) && ln.match(fnlnNameReject)) {
         //CORRECT!
@@ -408,8 +405,7 @@ function validatePhoneNumber() {
     //DEBUG: console.log(phoneNumber);
     //Code below accepts most number patterns that beloing to phone numbers.
     const phoneNumbervalidation = /(?!:\A|\s)(?!(\d{1,6}\s+\D)|((\d{1,2}\s+){2,2}))(((\+\d{1,3})|(\(\+\d{1,3}\)))\s*)?((\d{1,6})|(\(\d{1,6}\)))\/?(([ -.]?)\d{1,5}){1,5}((\s*(#|x|(ext))\.?\s*)\d{1,5})?(?!:(\Z|\w|\b\s))/gm;
-    //Phone number verification reject (Line above) refrenced from regexr.com/2rhsc by Dan G. Switzer, II
-
+    //Phone number verification reject (Line above) refrenced FROM -> regexr.com/2rhsc by Dan G. Switzer, II
 
     if (phoneNumber.match(phoneNumbervalidation)) {
         //CORRECT!
@@ -428,7 +424,7 @@ function validateEmail() {
     //Email got from document as seen below.
     var email = document.getElementById('email').value.toString();
     const emailValidation = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g;
-    //Email verification (Line above) uses the RFC2822 standard for verfication. This is refrenced from regexr.com/2rhq7 by Tripleaxis.
+    //Email verification (Line above) uses the RFC2822 standard for verfication. This is refrenced FROM -> regexr.com/2rhq7 by Tripleaxis.
 
     if (email.match(emailValidation)) {
         //CORRECT!
@@ -443,11 +439,11 @@ function validateEmail() {
 
 
 function validateDates() {
-    //NOTE: This could be done with JQuery https://eonasdan.github.io/bootstrap-datetimepicker/
+    //NOTE: This could be done with JQuery https://eonasdan.github.io/bootstrap-datetimepicker/ (I only found out later that we could do this :/ please add it to the assessment outline)
 
     //var date = document.getElementById('purcahseDate').value.toString();
     //Check if real date.
-    //console.log("input: " + date);
+    //DEBUG: console.log("input: " + date);
 
     //Date does not need to be checked as it is not possible to enter in a wrong date with the date picker.
     //Although for good measure, this try cath will send an error if, (somehow) the user entered a wrong date.
@@ -464,7 +460,7 @@ function validateDates() {
 
 
     var today = new Date();
-    //Reset time!
+    //Reset time! As this causes issues with checking dates with other dates e.g. if someone purcahsed and repaired a phone in the same day.
     today.setHours(0, 0, 0, 0);
 
     //new Date() automatically gets the current date. Read here https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date
@@ -478,10 +474,12 @@ function validateDates() {
         //DEBUG: console.log("Purcahse or Repair date is in future. Please try again.");
         //DEBUG: console.log('purcahseDate > today = ' + purcahseDate + today + "|| >" + repairDate + today)
         alertUser("Purcahse or Repair date is in future. Please try again!");
+        //Return false to stop validation.
         return false;
     } else if (repairDate < purcahseDate) {
         //If repair date is less than purcahse date, this will alert the user.
         alertUser("repair date is before purcase date. Please try again!")
+        //Return false to stop validation.
         return false;
         //DEBUG: console.log("repair date is before purcase date. Please try again.");
     } else {
@@ -492,8 +490,8 @@ function validateDates() {
     }
 }
 
-
 function validateWarrenty() {
+    //This function is differernt where, if the phone is under warrenty or not it will still be valid as an input so will not return true or false.
     //Warrenty, disabeld after 24 months
     var purchaseDate = new Date(document.getElementById("purcahseDate").value);
     //Above is the purcahse date of the phone, this is used to create a Date object.
@@ -509,6 +507,7 @@ function validateWarrenty() {
         console.log("out of date");
         document.getElementById('warrenty').hidden = true;
         //Above hides the warrenty button if warrenty is out of date.
+        
         return "No Warrenty";
     } else {
         //CORRECT!
@@ -541,7 +540,7 @@ function alertUser(message) {
     alert(message);
 }
 
-//Global variables to keep track of things.
+//Global variables to keep track of costs.
 var ableToAdd = true;
 var ableToAddCharger = true;
 var totalCost = 0;
@@ -550,9 +549,10 @@ var serviceFee = 0;
 
 function addTocourtesyTable() {
     //The pricipal of this function is when the add button is clicked, the table (and variables) will be updated with new information.
+    //This function could be more effiecnt as a some of the code is used multitple times. But this still works well.
 
     if (ableToAdd == true && document.getElementById('courtesyPhone').value == "iPhone 7") {
-        //In this code below, if the value of the selector == 'courtesyPhone' the table called 'table' will be found and new rows and cells added.
+        //In this code below, if the value of the selector == 'courtesyPhone' the table called 'table' will be found, and new rows and cells added.
 
         var table = document.getElementById('table');
         var row = table.insertRow(1);
@@ -563,6 +563,7 @@ function addTocourtesyTable() {
         totalCost += 275;
         //Adds 275 to the total.
         cellItem.innerText = document.getElementById('courtesyPhone').value;
+        
         ableToAdd = false;
         //Disables the ability to add a new phone. Although as ableToAddCharger is still enabled below, so you can add a charger.
 
@@ -578,6 +579,7 @@ function addTocourtesyTable() {
         //Adds 100 to the total.
         totalCost += 100;
         cellItem.innerText = document.getElementById('courtesyPhone').value;
+        
         ableToAdd = false;
         //Disables the ability to add a new phone. Although as ableToAddCharger is still enabled below, so you can add a charger.
     } else if (ableToAddCharger == true && document.getElementById('courtesyPhone').value == "Charger") {
@@ -590,6 +592,7 @@ function addTocourtesyTable() {
         cellCost.innerText = "30";
         totalCost += 30;
         cellItem.innerText = document.getElementById('courtesyPhone').value;
+        
         ableToAddCharger = false;
         //Disables the ability to add a new charger. Although as ableToAdd is still enabled below, so you can still add a phone, if not already added.
     }
@@ -607,7 +610,7 @@ function addTocourtesyTable() {
 
 function upDateCosts() {
 
-    //ServiceFee
+//ServiceFee
     //DEBUG: console.log('working');
     if (document.getElementById('warrenty').checked == true) {
         //This is where the 'warrenty' of the product is checked. If it is still under warrenty (checked) the service fee will be set to 0.
@@ -620,7 +623,7 @@ function upDateCosts() {
     }
     //As this above is the only place where the serviceFee gets set, it does not need to be set to 0 with an else statement.
 
-    //bond
+//Bond
     if (document.getElementById('consumer').checked == true) {
         //If you are a consumer the cost is calculated as totalcost (Or bond) + service fee (which can be 0 or 85 depending on the warrenty).
         document.getElementById('bond').value = totalCost;
@@ -629,11 +632,11 @@ function upDateCosts() {
         document.getElementById('totalGST').value = (totalCost + serviceFee) * 1.15;
         //DEBUG: console.log("trying to add bond + service" + totalCost + serviceFee);
     } else if (document.getElementById('business').checked == true) {
-        //If you are a business you do not pay a bond. Although, in this case the website will need to remeber the bond price
+        //If you are a business you do not pay a bond. Although, in this case the website will need to remeber the bond price with the global variable.
         //incase the user clicks the consumer button. 
+//Totals
         document.getElementById('total').value = serviceFee;
         document.getElementById('bond').value = 0;
-
 
         document.getElementById('gst').value = serviceFee * 0.15;
         document.getElementById('totalGST').value = serviceFee * 1.15;
@@ -672,16 +675,15 @@ function removeFromTable() {
     upDateCosts();
 
 }
-
+//blobList keeps track of all "blob" urls read more here https://developer.mozilla.org/en-US/docs/Web/API/Blob
 var blobList = [];
 
 function reset() {
-    //Goes through the entire document and resets everything. This uses URL.revoke to remove all temporary URLS. Read more here: https://developer.mozilla.org/en-US/docs/Web/API/URL/revokeObjectURL
-    
+    //Goes through the entire document and resets everything. The for each loop uses URL.revoke to remove all temporary URLS. Read more here: https://developer.mozilla.org/en-US/docs/Web/API/URL/revokeObjectURL
     blobList.forEach(element => {
         URL.revokeObjectURL(element);
     });
-
+    //Then reset everything else.
     document.getElementById('image').src = "";
     document.getElementById('consumer').checked = false;
     document.getElementById('business').checked = false;
@@ -711,7 +713,7 @@ function reset() {
 
     //Gets the table index and deletes the entire table leaving the header row https://stackoverflow.com/questions/47214759/how-to-reset-an-html-table-to-its-original-after-changing-it-with-a-javascript-f
     var table = document.getElementById("table");
-
+    //While there is more than 1 row delete rows.
     while (table.rows.length > 1) {
         table.deleteRow(1);
 
@@ -745,12 +747,15 @@ function changeTheme() {
     //Set cookie here. 
     var color = document.getElementById("theme");
     var selectedcolor = color.options[color.selectedIndex].text;
+    //get the selected index above.
 
     if (selectedcolor == "Default") {
+        //Sets all the colours to default.
         document.getElementById("customHeader").style.backgroundColor = "#2a3a4a";
         document.getElementById("customFooter").style.backgroundColor = "#2a3a4a";
         setCookie("#2a3a4a");
     } else {
+        //Sets the colours to the custom ones.
         document.getElementById("customHeader").style.backgroundColor = selectedcolor;
         document.getElementById("customFooter").style.backgroundColor = selectedcolor;
         setCookie(selectedcolor);
@@ -760,22 +765,29 @@ function changeTheme() {
 }
 
 function setCookie(color){
+    //Tries to save cookie.
+    try{
     document.cookie = color + ";path=/";
-    
+    } catch(e) {
+        console.log("Set Cookie Error");
+    }
 }
 
 function onloadCookie(){
+    //Tries to load cookie.
     try{
+        //Sets the customHeader and customFooter 
         document.getElementById("customHeader").style.backgroundColor = document.cookie;
         document.getElementById("customFooter").style.backgroundColor = document.cookie;
         
-        console.log("Trying to reload Cookie " + document.cookie);
+        //DEBUG: console.log("Trying to reload Cookie " + document.cookie);
 
         if(document.cookie == "#2a3a4a") {
-            
+            //If the cookie is set to default here.
         } else {
             //alertUser("We saw you liked " + document.cookie + " so we saved it just for you");
             if(document.cookie == "Orange") {
+                //To avoid, on reload the indexed boxes from setting back to default this sets all boxes to their index.
                 document.getElementById("theme").selectedIndex = 1;
             } else {
                 document.getElementById("theme").selectedIndex = 2;
@@ -783,7 +795,7 @@ function onloadCookie(){
         }
         
     } catch(e) {
-        console.log("Cookie Error");
+        console.log("Cookie Error. Someone put to much salt in!");
     }
     
 }
@@ -802,11 +814,13 @@ function initAddy() {
     }
 }
 
-//Read more:https://stackoverflow.com/questions/22087076/how-to-make-a-simple-image-upload-using-javascript-html
+//Using blob urls. Refrenced from (and read more here): clabe45 (29-08-2017) How to make a simple image upload using Javascript/HTML https://stackoverflow.com/questions/22087076/how-to-make-a-simple-image-upload-using-javascript-html 
+//When the choose file button is clicked this event listner will activate. Read more about querry selectors here https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector
 window.addEventListener('load', function() {
     document.querySelector('input[type="file"]').addEventListener('change', function() {
         if (this.files && this.files[0]) {
-            var img = document.querySelector('img');  // $('img')[0]
+            var img = document.querySelector('img');
+            //This will then create a blob URL that can be accessed by the <img> tag in the html.
             img.src = URL.createObjectURL(this.files[0]); // set src to blob url
             img.onload = imageIsLoaded;
         }
@@ -817,3 +831,5 @@ function imageIsLoaded() {
 //Once image is loaded add to list, this is so the URL can be found later and reset under the reset function.
 blobList.push(this.src);
 }
+
+//That is a lot of code, wow.

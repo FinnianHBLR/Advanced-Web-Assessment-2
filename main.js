@@ -721,6 +721,12 @@ function openFAQ() {
     window.open("faq.html");
 }
 
+function phones() {
+    //DEBUG console.log("test");
+    //Opens the window for the 3D phones.
+    window.open("phones.html");
+}
+
 function changeTheme() {
     //Read More about Cookies Here: https://www.w3schools.com/js/tryit.asp?filename=tryjs_cookie_username
     //var currentTheme = document.getElementById()
@@ -770,4 +776,18 @@ function onloadCookie(){
         console.log("Cookie Error");
     }
     
+}
+
+
+//Using Adderess API. Read more: https://www.addy.co.nz/address-finder-code-example
+function initAddy() {
+    //Using the libaray included at the top of this js this will call a search when you enter in the search feature.
+    var addyComplete = new AddyComplete(document.getElementById("street"));
+    //When this then complets, this will then update all the boxes with new information.
+    addyComplete.fields = {
+        address1: document.getElementById("street"),
+        suburb: document.getElementById("suburb"),
+        city: document.getElementById("city"),
+        postcode: document.getElementById("postCode"),
+    }
 }

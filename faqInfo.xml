@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<cards>
 <card>
     <heading>What is the service fee about?</heading>
     <text>The service fee is the amount that we charge to service your phone. No need to worry if your phone is under warrenty.</text>
@@ -11,3 +12,4 @@
     <heading>Do I need a charger for my phone?</heading>
     <text>It depends, we can provide one with your bond. Otherwise we'll just include one (this will be a part of the bond cost).</text>
 </card>
+</cards>

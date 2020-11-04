@@ -1,3 +1,5 @@
+
+
 function validate() {
     newArray = new Array();
 
@@ -671,8 +673,16 @@ function removeFromTable() {
 
 }
 
+var blobList = [];
+
 function reset() {
-    //Goes through the entire document and resets everything.
+    //Goes through the entire document and resets everything. This uses URL.revoke to remove all temporary URLS. Read more here: https://developer.mozilla.org/en-US/docs/Web/API/URL/revokeObjectURL
+    
+    blobList.forEach(element => {
+        URL.revokeObjectURL(element);
+    });
+
+    document.getElementById('image').src = "";
     document.getElementById('consumer').checked = false;
     document.getElementById('business').checked = false;
     document.getElementById('firstName').value = "";
@@ -779,7 +789,7 @@ function onloadCookie(){
 }
 
 
-//Using Adderess API. Read more: https://www.addy.co.nz/address-finder-code-example
+//Using Adderess API. Read more: https://www.addy.co.nz/
 function initAddy() {
     //Using the libaray included at the top of this js this will call a search when you enter in the search feature.
     var addyComplete = new AddyComplete(document.getElementById("street"));
@@ -790,4 +800,20 @@ function initAddy() {
         city: document.getElementById("city"),
         postcode: document.getElementById("postCode"),
     }
+}
+
+//Read more:https://stackoverflow.com/questions/22087076/how-to-make-a-simple-image-upload-using-javascript-html
+window.addEventListener('load', function() {
+    document.querySelector('input[type="file"]').addEventListener('change', function() {
+        if (this.files && this.files[0]) {
+            var img = document.querySelector('img');  // $('img')[0]
+            img.src = URL.createObjectURL(this.files[0]); // set src to blob url
+            img.onload = imageIsLoaded;
+        }
+    });
+});
+
+function imageIsLoaded() { 
+//Once image is loaded add to list, this is so the URL can be found later and reset under the reset function.
+blobList.push(this.src);
 }

@@ -102,9 +102,15 @@
             <div class="card w-100 mb-3">
                 <div class="card-body">
                     <h5 class="card-title">4. “file upload” feature</h5>
-                    <p class="card-text">allows users to upload the image of the repair phones & display the image on
-                        the page for viewing as well.</p>
-                    <input class="btn btn-light mx-2 px-4" type="button" value="See Search" onclick="openFAQ()">
+                    <p class="card-text">Allows users to upload the image of the repair phones & display the image on
+                        the page. This uses "blob" URLs. These URLs are temporary URLs that are stored on session. These then are removed on reset using or by also using URL.revokeObjectURL().</p>
+                        <div class="form-group row">
+                            <label class="col-sm-5" for="uploadImage">Upload Image: </label>
+                            <div class="col-sm-7">
+                                <input type="file">
+                                <img id="image" src="#" alt="Image upload" height="150" width="150">
+                            </div>
+                        </div>
                 </div>
             </div>
             <div class="card w-100 mb-3">

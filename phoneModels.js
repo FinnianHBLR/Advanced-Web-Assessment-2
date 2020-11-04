@@ -1,10 +1,14 @@
 //KNOWN ISSUE: The model of the phone has the same texture on all sides, this would be solved by creating a quad like this. https://stackoverflow.com/questions/43741561/how-do-i-is-it-posssible-to-keep-different-picture-in-each-side-of-box-in-p5
 
+function closeWindow() {
+    window.close();
+}
+
 //Read more here: https://p5js.org/examples/3d-textures.html
 //Vars
-let img;
-let theta = 7;
-
+var img;
+var img2;
+var theta = 7;
 
 function loadModels() {
     //This will setup and draw the models.
@@ -16,9 +20,9 @@ function loadModels() {
 function setup() {
     //This will create a canvas to add the phones too.
     createCanvas(800, 500, WEBGL);
-  
-    img = loadImage('apple.jpg');
-    img2 = loadImage('android.jpg')
+    //This image has to be hosted on imgur otherwise there will be a cores error as local files are not allowed.
+    img = loadImage('https://i.imgur.com/Xcm6rvx.jpg');
+    img2 = loadImage('https://i.imgur.com/XLDTIQq.jpg');
 }
 
 function draw() {

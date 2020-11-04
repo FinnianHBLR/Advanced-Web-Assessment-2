@@ -1,16 +1,45 @@
+var proxy = 'https://cors-anywhere.herokuapp.com/';
+var url = 'https://raw.githubusercontent.com/Nova-472/Advanced-Web-Assessment-2/master/faqInfo.xml';
+
 
 //Rad more from: https://www.w3schools.com/xml/ajax_applications.asp
 function loadXMLDoc() {
     var xmlhttp = new XMLHttpRequest();
     //Creates new xmlhttp request to request the local file.
     xmlhttp.onreadystatechange = function() {
+      console.log("Function Start")
       if (this.readyState == 4 && this.status == 200) {
-        myFunction(this);
+        console.log("setting xml");
+        setXML(this);
       }
     };
+
     //Open and send the request.
-    xmlhttp.open("GET", "faqInfo.xml", true);
+    xmlhttp.open("GET", proxy + url, true);
+    xmlhttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+
     xmlhttp.send();
+  }
+
+  function setXML(xml) {
+    var i;
+    var xmlDoc = xml.responseXML;
+    console.log(xml.responseText);
+    //Init empty var
+    var data= "";
+    //Gets each element by it's tag name "card". See the faqInfo.xml file for more info
+    var x = xmlDoc.getElementsByTagName("card");
+    for (i = 0; i <x.length; i++) { 
+        //Add starting tags as seen above to data, this goes all the way to the title then next the title will be inserted.
+      data += "<div class=\"card w-100 m-4 p-4\"><div class=\"card-body\"><h5 class=\"card-title\">" +
+      x[i].getElementsByTagName("heading")[0].childNodes[0].nodeValue +
+      "</h5><p class=\"card-text\">" +
+      x[i].getElementsByTagName("text")[0].childNodes[0].nodeValue +
+      "</p></div></div>";
+    }
+    //After infomation is set table will now be set to the data and logged out. 
+    document.getElementById("cards").innerHTML = data;
+    //DEBUG: console.log(data);
   }
 
 /*Below code creates cards that look like this 
@@ -31,25 +60,7 @@ function loadXMLDoc() {
 https://getbootstrap.com/docs/4.3/components/card/
 */
 
-  function myFunction(xml) {
-    var i;
-    var xmlDoc = xml.responseXML;
-    //Init empty var
-    var data= "";
-    //Gets each element by it's tag name "card". See the faqInfo.xml file for more info
-    var x = xmlDoc.getElementsByTagName("card");
-    for (i = 0; i <x.length; i++) { 
-        //Add starting tags as seen above to data, this goes all the way to the title then next the title will be inserted.
-      data += "<div class=\"card w-100 m-4 p-4\"><div class=\"card-body\"><h5 class=\"card-title\">" +
-      x[i].getElementsByTagName("heading")[0].childNodes[0].nodeValue +
-      "</h5><p class=\"card-text\">" +
-      x[i].getElementsByTagName("text")[0].childNodes[0].nodeValue +
-      "</p></div></div>";
-    }
-    //After infomation is set table will now be set to the data and logged out. 
-    document.getElementById("cards").innerHTML = data;
-    //DEBUG: console.log(data);
-  }
+
 
 
 //Adv JS feature 1.

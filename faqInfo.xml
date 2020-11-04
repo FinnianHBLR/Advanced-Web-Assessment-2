@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<cards>
-    <card>
-        <heading>What is the service fee about?</heading>
-        <text>The service fee is the amount that we charge to service your phone. No need to worry if your phone is under warrenty.</text>
-    </card>
-    <card>
-        <heading>What is the bond all about?</heading>
-        <text>The bond, in this case is about insurance. A bond is charged as the cost of the equipment you are borrowing. Don't worry as soon as we get your device fixed we'll pay it right back. If the borrowed device is still in good condition of course.</text>
-    </card>
-    <card>
-        <heading>Do I need a charger for my phone?</heading>
-        <text>It depends, we can provide one with your bond. Otherwise we'll just include one (this will be a part of the bond cost).</text>
-    </card>
-</cards>
+<card>
+    <heading>What is the service fee about?</heading>
+    <text>The service fee is the amount that we charge to service your phone. No need to worry if your phone is under warrenty.</text>
+</card>
+<card>
+    <heading>What is the bond all about?</heading>
+    <text>The bond, in this case is about insurance. A bond is charged as the cost of the equipment you are borrowing. Don't worry as soon as we get your device fixed we'll pay it right back. If the borrowed device is still in good condition of course.</text>
+</card>
+<card>
+    <heading>Do I need a charger for my phone?</heading>
+    <text>It depends, we can provide one with your bond. Otherwise we'll just include one (this will be a part of the bond cost).</text>
+</card>

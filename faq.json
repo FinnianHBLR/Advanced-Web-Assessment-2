@@ -1,0 +1,7 @@
+{
+    "cards": [
+       { "card":"1" , "heading":"What is the service fee about?", "text":"The service fee is the amount that we charge to service your phone. No need to worry if your phone is under warrenty." },
+       { "card":"2" , "heading":"What is the bond all about?", "text":"The bond, in this case is about insurance. A bond is charged as the cost of the equipment you are borrowing. Don't worry as soon as we get your device fixed we'll pay it right back. If the borrowed device is still in good condition of course."},
+       { "card":"3" , "heading":"Do I need a charger for my phone?", "text":">It depends, we can provide one with your bond. Otherwise we'll just include one (this will be a part of the bond cost)." }
+    ]
+  }

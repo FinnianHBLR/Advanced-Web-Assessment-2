@@ -1,49 +1,19 @@
-var proxy = 'https://cors-anywhere.herokuapp.com/';
-var url = 'https://raw.githubusercontent.com/Nova-472/Advanced-Web-Assessment-2/master/faqInfo.xml';
 
 
-//Rad more from: https://www.w3schools.com/xml/ajax_applications.asp
-
-//document.getElementById("myFrame").addEventListener("load", myFunction);
+//Read more: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
+//To avoid cross origin I have put the file on pastebin here: https://pastebin.pl/view/raw/1ce318c8
 
 function loadXMLDoc() {
-
-  var xmlhttp = new XMLHttpRequest();
-  //Creates new xmlhttp request to request the local file.
-  xmlhttp.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-
-      var xmlDoc = this.responseXML;
-      console.log(this.responseText);
-      //Init empty var
-      var data = "";
-      //Gets each element by it's tag name "card". See the faqInfo.xml file for more info
+    fetch("https://pastebin.pl/view/raw/1ce318c8")
+    .then(response => response.json())
+    .then(json => (setData(json)));
     
-      var x = xmlDoc.getElementsByTagName("card");
-      console.log(x);
-      for (i = 0; i < x.length; i++) {
-        //Add starting tags as seen above to data, this goes all the way to the title then next the title will be inserted.
-        data += "<div class=\"card w-100 m-4 p-4\"><div class=\"card-body\"><h5 class=\"card-title\">" +
-          x[i].getElementsByTagName("heading")[0].childNodes[0].nodeValue +
-          "</h5><p class=\"card-text\">" +
-          x[i].getElementsByTagName("text")[0].childNodes[0].nodeValue +
-          "</p></div></div>";
-      }
-      //After infomation is set table will now be set to the data and logged out. 
-      document.getElementById("cards").innerHTML = data;
-      //DEBUG: console.log(data);
-      
+    function setData(data){
+      //For each card 
+      for (i = 0; i < data.cards.length; i++) {
+      console.log(data.cards[i].card);
     }
-  };
-  //Open and send the request.
-  xmlhttp.open("GET", proxy + url, true);
-
-  xmlhttp.send();
-}
-
-
-function myFunction(xml) {
-
+  }
 }
 
 /*Below code creates cards that look like this 

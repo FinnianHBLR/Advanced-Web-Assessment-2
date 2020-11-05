@@ -36,16 +36,16 @@
 </head>
 <!--customHeader is for the custom theme-->
 <header id="customHeader">
-    
+
     <h1>Phone Booking System FAQ?</h1>
     <div class="d-flex flex-row-reverse">
-    <nav>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="extension.html">Extension</a></li>
-        </ul>
-    </nav>
-</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="extension.html">Extension</a></li>
+            </ul>
+        </nav>
+    </div>
     <div class="d-flex flex-row-reverse">
         <!--changeTheme() will change the theme of the website whenever clicked.-->
         <div class="col-sm-2">
@@ -60,19 +60,20 @@
 
 </header>
 <!--loadXMLDoc loads the information from the faqInfo.xml. onloadCookie loads the theme when the body is loaded. SearchCards is used whenever a key is entered.-->
+
 <body onload="loadXMLDoc(), onloadCookie()">
     <!--Search Function-->
     <input type="text" id="searchBox" class="form-control" onkeyup="searchCards()" placeholder="Enter Title Search...">
 
     <div class="container" id="cardContainer">
-    <div id="cards"></div>
-    
-</div>
+        <div id="cards"></div>
+
+    </div>
+</body>
+
 <!--customFooter is to load the custom theme-->
 <footer class="footer" id="customFooter">
     <div class="d-flex justify-content-center">
         <p class="py-3">Advanced Web Design, Copyright © BCS - EIT</p>
     </div>
 </footer>
-
-</body>

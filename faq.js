@@ -1,22 +1,57 @@
 
 
 //Read more: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
-//To avoid cross origin I have put the file on pastebin here: https://pastebin.pl/view/raw/1ce318c8
+//To avoid cross origin I have put the file on pastebin here:https://raw.githubusercontent.com/Nova-472/Advanced-Web-Assessment-2/master/faq.json and for a backup https://pastebin.pl/view/raw/1ce318c8
 
 function loadXMLDoc() {
-    fetch("https://pastebin.pl/view/raw/1ce318c8")
-    .then(response => response.json())
-    .then(json => (setData(json)));
-    
-    function setData(data){
+  //Try for a first request from github raw file.
+  try {
+    fetch("https://raw.githubusercontent.com/Nova-472/Advanced-Web-Assessment-2/master/faq.json")
+      .then(response => response.json())
+      .then(json => (setData(json)));
+
+      //This data that is got is then put into cards
+    function setData(data) {
       //For each card 
+      tempData = "";
+
       for (i = 0; i < data.cards.length; i++) {
-      console.log(data.cards[i].card);
+        console.log(data.cards[i].card);
+          //Add starting tags as seen above to data, this goes all the way to the title then next the title will be inserted.
+          tempData += "<div class=\"card w-100 m-4 p-4\"><div class=\"card-body\"><h5 class=\"card-title\">" +
+            data.cards[i].heading +
+            "</h5><p class=\"card-text\">" +
+            data.cards[i].text +
+            "</p></div></div>";
+      }
+      document.getElementById("cards").innerHTML = tempData;
     }
+
+  } catch (e) {
+
+    //In case this is blocked for some reason, refer to backup
+    fetch("https://pastebin.pl/view/raw/1ce318c8")
+      .then(response => response.json())
+      .then(json => (setData(json)));
+
+      function setData(data) {
+        //For each card 
+        tempData = "";
+  
+        for (i = 0; i < data.cards.length; i++) {
+          console.log(data.cards[i].card);
+            //Add starting tags as seen above to data, this goes all the way to the title then next the title will be inserted.
+            tempData += "<div class=\"card w-100 m-4 p-4\"><div class=\"card-body\"><h5 class=\"card-title\">" +
+              data.cards[i].heading +
+              "</h5><p class=\"card-text\">" +
+              data.cards[i].text +
+              "</p></div></div>";
+        }
+        document.getElementById("cards").innerHTML = tempData;
+      }
   }
 }
-
-/*Below code creates cards that look like this 
+/*Above code creates cards that look like this 
  
 <div class="card w-75">
   <div class="card-body">

@@ -775,6 +775,8 @@ function changeTheme() {
 function setCookie(color){
     //Tries to save cookie.
     try{
+        
+        //console.log("Trying to set cookie");
     document.cookie = color + ";path=/";
     } catch(e) {
         console.log("Set Cookie Error");
